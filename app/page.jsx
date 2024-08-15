@@ -15,9 +15,9 @@ export default function Home() {
     <main>
       <Navbar />
       <div className="">
-      <h1 className="text-4xl md:text-5xl font-extralight text-center pt-10">NASA API'S</h1>
+      <h1 className="text-4xl md:text-5xl font-extralight text-center pt-10">NASA APIS</h1>
       <p className="text-gray-700 font-light text-md sm:text-xl  p-10 pb-5 text-center ">
-      On this page you will find public information provided by NASA API'S related to their work.
+      On this page you will find public information provided by NASA APIS related to their work.
       </p>
       <p className="text-gray-500 text-md sm:text-xl font-light pb-5 p-10 pt-0 text-center ">
       Choose the information about what you want to consult!      </p>
