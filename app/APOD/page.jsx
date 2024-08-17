@@ -1,6 +1,6 @@
 
 import Link from "next/link";
-function Apod() {
+function apod() {
   const categories = [{ category: "Single Date" ,url:'singleDate'}, { category: "Range Date",url:'rangeDate' }];
   return (
     <main>
@@ -34,4 +34,4 @@ function Apod() {
   );
 }
 
-export default Apod;
+export default apod;
