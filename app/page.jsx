@@ -2,7 +2,7 @@ import Link from "next/link";
 import "tailwindcss";
 export default function Home() {
   const categories = [
-    { category: "apod", subText: "Astronomy Picture Of the Day" },
+    { category: "papod", subText: "Astronomy Picture Of the Day" },
     { category: "asteroids", subText: "Asteroids information" },
     { category: "epic", subText: "Earth Polychromatic Imaging Camera" },
     { category: "mars rover", subText: "Mars Rover Photos" },
