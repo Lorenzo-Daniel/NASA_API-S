@@ -12,7 +12,7 @@ export default function Home() {
 
   return (
     <main>
-      <Navbar />
+    <Navbar/>
       <div className="">
         <h1 className="text-4xl md:text-5xl font-extralight text-center pt-10">
           NASA APIS

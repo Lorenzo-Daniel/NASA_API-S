@@ -9,9 +9,8 @@ export const metadata = {
 
  function ApodLayout({ children }) {
   return (
-      <body className={inter.className}>
-      <Navbar/>
-  
+    <body className={inter.className}>
+    <Navbar/>
       {children}
       </body>
   );

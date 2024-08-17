@@ -1,5 +1,5 @@
 import React from 'react'
-import Componente from '../components/SingleDate'
+import Componente from '../apod/components/SingleDate'
 function SingleDate() {
 
   //SINGLE DATE

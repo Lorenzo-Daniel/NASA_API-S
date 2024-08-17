@@ -5,6 +5,7 @@ import { TiTick } from "react-icons/ti";
 import { CircleLoader } from "react-spinners";
 import { RiErrorWarningFill } from "react-icons/ri";
 import dynamic from "next/dynamic";
+import Navbar from "../components/Navbar/Navbar";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
@@ -162,6 +163,7 @@ function RangeDate() {
 
   return (
     <main className="relative">
+    <Navbar/>
       <h1 className="text-4xl md:text-5xl font-extralight text-center pt-10">
         Range Date
       </h1>

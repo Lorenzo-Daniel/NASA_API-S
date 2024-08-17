@@ -1,39 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import Image from "next/image";
 function Apod() {
-  const [today, setToday] = useState(null);
-  const categories = [{ category: "Single Date" ,url:'apod/singleDate'}, { category: "Range Date",url:'apod/rangeDate' }];
-
-  //GET TODAY
-  const getTodayRequest = async () => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
-    const date = today.getDate();
-    const formatDate = `${year}-${month}-${date}`;
-    try {
-      // setIsLoading({ today: true });
-      const request = await fetch(
-        `https://api.nasa.gov/planetary/apod?api_key=teHf0lemJMiaPjInzdphYVK6bDuGLSaFt8jO8IIj&date=${formatDate}&concept_tags=True`
-      );
-      const response = await request.json();
-      setToday(response);
-      // localStorage.setItem("pictures", JSON.stringify([response]));
-      // setIsLoading({ today: false });
-      // navigate("/apodGallery");
-    } catch (error) {
-      // setIsLoading({ today: false });
-      alert("Algo salio mal! Vuelve a intentarlo mas tarde");
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    // getTodayRequest();
-  }, []);
+  const categories = [{ category: "Single Date" ,url:'singleDate'}, { category: "Range Date",url:'rangeDate' }];
   return (
     <main>
       <h1 className="text-4xl md:text-5xl font-extralight text-center pt-10">
@@ -62,18 +31,6 @@ function Apod() {
           );
         })}
       </div>
-      {/* <div>
-        <h2>Picture of the Day</h2>
-        <span>{today?.date}</span>
-        <p>{today?.explanation}</p>
-        <div className="w-8/12 h-3/6 overflow-hidden">
-          <img
-            src={today?.url}
-            alt="picture"
-            className=""
-          />
-        </div>
-      </div> */}
     </main>
   );
 }
