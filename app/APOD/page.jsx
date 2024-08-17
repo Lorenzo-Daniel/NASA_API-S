@@ -1,10 +1,11 @@
-"use client";
 
 import Link from "next/link";
+import Navbar from "../components/Navbar/Navbar";
 function Apod() {
   const categories = [{ category: "Single Date" ,url:'singleDate'}, { category: "Range Date",url:'rangeDate' }];
   return (
     <main>
+    <Navbar/>
       <h1 className="text-4xl md:text-5xl font-extralight text-center pt-10">
         APOD
       </h1>
