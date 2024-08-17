@@ -26,7 +26,7 @@ export default function Home() {
           {categories.map((item, index) => {
             return (
               <Link
-                href={item.category}
+                href={`/${item.category}`}
                 key={index}
                 className="border     hover:bg-gray-100 h-32 md:h-60 flex-column content-center rounded  cursor-pointer"
               >
