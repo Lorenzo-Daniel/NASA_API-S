@@ -1,7 +1,9 @@
-
 import Link from "next/link";
 function apod() {
-  const categories = [{ category: "Single Date" ,url:'singleDate'}, { category: "Range Date",url:'rangeDate' }];
+  const categories = [
+    { category: "Single Date", url: "singleDate" },
+    { category: "Range Date", url: "rangeDate" },
+  ];
   return (
     <main>
       <h1 className="text-4xl md:text-5xl font-extralight text-center pt-10">
@@ -23,9 +25,7 @@ function apod() {
               style={{ width: "500px" }}
               className="border hover:bg-gray-100   h-32 lg:h-60 flex-column content-center rounded  cursor-pointer"
             >
-              <p className="text-xl text-black text-center ">
-                {item.category}
-              </p>
+              <p className="text-xl text-black text-center ">{item.category}</p>
             </Link>
           );
         })}
