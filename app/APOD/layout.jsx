@@ -11,6 +11,7 @@ export const metadata = {
   return (
       <body className={inter.className}>
       <Navbar/>
+  
       {children}
       </body>
   );

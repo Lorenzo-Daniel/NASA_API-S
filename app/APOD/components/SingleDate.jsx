@@ -1,9 +1,12 @@
 import React from 'react'
 
 function SingleDate() {
+  
+
+  
   return (
     <div>
-      Single Date
+      SingleDate
     </div>
   )
 }

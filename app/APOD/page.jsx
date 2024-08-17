@@ -2,115 +2,79 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
- 
+import Image from "next/image";
 function Apod() {
-  const [dropDownExplanationIndex, setDropDownExplanationIndex] = useState();
-  const [dropDownHandler, setDropDownHandler] = useState(true);
-  const [wiki, setWiki] = useState([]);
-  const [data, setData] = useState([]);
-  // const [spinner, setSpinner] = useState(true);
-  const [showResults, setShowResults] = useState(false);
-  
+  const [today, setToday] = useState(null);
+  const categories = [{ category: "Single Date" ,url:'apod/singleDate'}, { category: "Range Date",url:'apod/rangeDate' }];
 
-  // const popUpImgGaleria = (urlImg, nombre) => {
-  //   Swal.fire({
-  //     title: `${nombre}`,
-  //     color: "#ffffff",
-  //     imageUrl: urlImg,
-  //     showConfirmButton: false,
-  //     showCloseButton: true,
-  //     position: "center",
-  //     background: "#ffffff",
-  //     width: '100%',
-  //     showClass: {
-  //       popup: "animate__animated animate__fadeIn animate__fast",
-  //     },
-  //     hideClass: {
-  //       popup: "animate__animated animate__fadeOut animate__fast",
-  //     },
-  //     customClass: {
-  //       popup: "galeria-swal2-popup",
-  //       closeButton: "swal2-close ",
-  //       title: "galeria-swal2-title",
-  //       // image: "galeria-swal2-image",
-  //     },
-  //   });
-  // };
-
-  //WIKIPEDIA
-
-  const requestWikipedia = async (keySearch) => {
-    const url = `https://en.wikipedia.org/w/api.php?action=query&list=search&srprop=snippet&format=json&origin=*&utf8=&srsearch=${keySearch}`;
-    const option = {
-      method: "GET",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+  //GET TODAY
+  const getTodayRequest = async () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+    const date = today.getDate();
+    const formatDate = `${year}-${month}-${date}`;
     try {
-      const petition = await fetch(url, option);
-      const res = await petition.json();
-      const resSearch = res?.query?.search;
-      const resultArrayMax3 = [];
-      for (let i = 0; i < 3; i++) {
-        resultArrayMax3.push(resSearch[i]);
-      }
-
-      for (let i = 0; i < resultArrayMax3.length; i++) {
-        let removeSymbol = resultArrayMax3[i].snippet;
-        const removeContent = removeSymbol.replace(/<[^>]*>/g, "");
-        resultArrayMax3[i].snippet = removeContent;
-      }
-      return resultArrayMax3;
+      // setIsLoading({ today: true });
+      const request = await fetch(
+        `https://api.nasa.gov/planetary/apod?api_key=teHf0lemJMiaPjInzdphYVK6bDuGLSaFt8jO8IIj&date=${formatDate}&concept_tags=True`
+      );
+      const response = await request.json();
+      setToday(response);
+      // localStorage.setItem("pictures", JSON.stringify([response]));
+      // setIsLoading({ today: false });
+      // navigate("/apodGallery");
     } catch (error) {
-      console.log("problems request wiwkipedia max3 undefined");
+      // setIsLoading({ today: false });
+      alert("Algo salio mal! Vuelve a intentarlo mas tarde");
+      console.log(error);
     }
   };
 
-  const dropDownExplanationHandler = (index) => {
-    setDropDownExplanationIndex(index);
-    setDropDownHandler((prev) => !prev);
-  };
-
   useEffect(() => {
-    const getLS = JSON.parse(localStorage.getItem("pictures")) || [];
-    //OBTENER TITLES APOD
-    const getTitlesApod = async (getLS) => {
-      const titles = getLS.map((element) => element.title);
-      const promises = titles.map((title) => requestWikipedia(title));
-
-      try {
-        const responses = await Promise.all(promises);
-        for (let i = 0; i < responses.length; i++) {
-          if (responses[i] === undefined) {
-            const defaultResults = await requestWikipedia("Astronomy");
-            setWiki((prev) => [...prev, defaultResults]);
-          } else {
-            setWiki((prev) => [...prev, responses[i]]);
-          }
-        }
-        setData(getLS);
-        // setSpinner(false);
-        setShowResults(false);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getTitlesApod(getLS);
+    // getTodayRequest();
   }, []);
-
-
-  const getDate = (e)=> {
-const {value} = e.target
-console.log(value)
-
-  }
   return (
-    <div>
-    
-    </div>
+    <main>
+      <h1 className="text-4xl md:text-5xl font-extralight text-center pt-10">
+        APOD
+      </h1>
+      <p className="text-gray-700 font-light text-md sm:text-xl  p-10 pb-5 text-center ">
+        With this API you can choose the Astronomy Picture Of the Day or select
+        a range of dates and display a gallery
+      </p>
+      <p className="text-gray-500 text-md sm:text-xl font-light pb-5 p-10 pt-0 text-center ">
+        Choose the information about what you want to consult!
+      </p>
+      <div className=" flex justify-center gap-4 p-4 ">
+        {categories.map((item, index) => {
+          return (
+            <Link
+              href={item.url}
+              key={index}
+              style={{ width: "500px" }}
+              className="border hover:bg-gray-100   h-32 lg:h-60 flex-column content-center rounded  cursor-pointer"
+            >
+              <p className="text-xl text-black text-center ">
+                {item.category}
+              </p>
+            </Link>
+          );
+        })}
+      </div>
+      {/* <div>
+        <h2>Picture of the Day</h2>
+        <span>{today?.date}</span>
+        <p>{today?.explanation}</p>
+        <div className="w-8/12 h-3/6 overflow-hidden">
+          <img
+            src={today?.url}
+            alt="picture"
+            className=""
+          />
+        </div>
+      </div> */}
+    </main>
   );
 }
 
