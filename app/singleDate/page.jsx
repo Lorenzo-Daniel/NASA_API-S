@@ -1,5 +1,4 @@
 import React from 'react'
-import Componente from '../apod/components/SingleDate'
 function SingleDate() {
 
   //SINGLE DATE
@@ -22,8 +21,7 @@ function SingleDate() {
 
   return (
     <div>
-    
-     <Componente/>
+    single PAage
      </div>
   )
 }

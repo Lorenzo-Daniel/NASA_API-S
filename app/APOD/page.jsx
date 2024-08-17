@@ -1,6 +1,5 @@
 
 import Link from "next/link";
-import Navbar from "../components/Navbar/Navbar";
 function Apod() {
   const categories = [{ category: "Single Date" ,url:'singleDate'}, { category: "Range Date",url:'rangeDate' }];
   return (
