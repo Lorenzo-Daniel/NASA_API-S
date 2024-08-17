@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import logo from '../../images/nasa-logo.png';
+import logo from '../../../public/images/nasa-logo.png';
 import Link from "next/link";
 
 const Navbar = () => {

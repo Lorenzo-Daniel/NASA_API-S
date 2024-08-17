@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Navbar from "./components/Navbar/Navbar";
 import "tailwindcss";
 export default function Home() {
   const categories = [
@@ -12,7 +11,6 @@ export default function Home() {
 
   return (
     <main>
-    <Navbar/>
       <div className="">
         <h1 className="text-4xl md:text-5xl font-extralight text-center pt-10">
           NASA APIS

@@ -160,10 +160,10 @@ function RangeDate() {
       alert("Something went wrong. Please try again.");
     }
   };
+console.log(data);
 
   return (
     <main className="relative">
-    <Navbar/>
       <h1 className="text-4xl md:text-5xl font-extralight text-center pt-10">
         Range Date
       </h1>
@@ -263,13 +263,13 @@ function RangeDate() {
         {data?.map((img, index) => {
           return (
             <div key={index} > 
-              <div className="h-60 sm:h-40 lg:h-50 xl:h-52  overflow-hidden flex-fill " >
+              <div className="h-60 sm:h-40 lg:h-50 xl:h-52  content-center overflow-hidden flex-fill " >
 
                 {img?.media_type === "video" ? (
                   <ReactPlayer url={img.url} controls={true} width="100%" height="100%" />
                 ) : (
-                  <img src={img.url} alt={index} className="" />
-                )}
+                  <img src={img.url} alt={img.title} className="" />
+                ) }
               </div>
               <div className="flex justify-between">
                 <span> {img.date}</span>
