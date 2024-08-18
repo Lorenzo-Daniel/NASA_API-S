@@ -1,18 +1,19 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { TiTick } from "react-icons/ti";
 import { CircleLoader } from "react-spinners";
 import { RiErrorWarningFill } from "react-icons/ri";
 import dynamic from "next/dynamic";
 import Navbar from "../components/Navbar/Navbar";
+import Link from "next/link";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 function RangeDate() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(JSON.parse(sessionStorage.getItem("NASA-pictures")) || []);
   const [spinner, setSpinner] = useState(false);
   const [dateErrors, setDateErrors] = useState({
     start: { error: false, message: "" },
@@ -23,6 +24,10 @@ function RangeDate() {
     start: { success: false },
     end: { success: false },
   });
+
+
+
+console.log(data);
 
   const minDate = new Date("1995-06-16").getTime();
   const maxDate = new Date().getTime();
@@ -128,8 +133,6 @@ function RangeDate() {
     e.preventDefault();
 
     if (validateDates(startDate, endDate)) {
-    
-      
       getAPI(startDate, endDate);
     }
   };
@@ -141,6 +144,7 @@ function RangeDate() {
         `https://api.nasa.gov/planetary/apod?api_key=teHf0lemJMiaPjInzdphYVK6bDuGLSaFt8jO8IIj&start_date=${start}&end_date=${end}`
       );
       const response = await request.json();
+      sessionStorage.setItem("NASA-pictures", JSON.stringify(response));
       setStartDate("");
       setEndDate("");
       setDateErrors({
@@ -160,17 +164,18 @@ function RangeDate() {
       alert("Something went wrong. Please try again.");
     }
   };
-console.log(data);
 
   return (
     <main className="relative">
-      <h1 className="text-4xl md:text-5xl font-extralight text-center pt-10">
-        Range Date
-      </h1>
-      <p className="text-gray-700 font-light text-md sm:text-xl p-10 pb-5 text-center ">
-        Choose the range, this must be between 1995-06-16 and today. The maximum
-        number of results is 100 pictures.
-      </p>
+      <div className="max-w-screen-md m-auto ">
+        <h1 className="text-4xl md:text-5xl font-extralight text-center pt-10">
+          Range Date
+        </h1>
+        <p className="text-gray-500 font-light text-md sm:text-xl p-10 pb-5 text-center ">
+          Choose the range, this must be between 1995-06-16 and today. The
+          maximum number of results is 100 pictures.
+        </p>
+      </div>
       <form onSubmit={searchData}>
         <div className="flex flex-col sm:flex-row items-center sm:items-end justify-center sm:gap-4">
           <div className="h-24 flex flex-col">
@@ -179,13 +184,14 @@ console.log(data);
                 Start Date
               </span>
             </div>
-            <div className="flex-column  items-center">
+            <div className="flex-column items-center">
               <div className="flex items-center ">
                 <input
                   type="date"
-                  className="w-64 h-10 border cursor-pointer focus:outline-none px-2 rounded text-gray-700 font-light hover:bg-gray-100"
+                  className="w-80  h-10 border cursor-pointer focus:outline-none px-2 rounded text-gray-700 font-light hover:bg-gray-100"
                   value={startDate}
                   onChange={(e) => {
+                    validateDates(e.target.value, "");
                     setStartDate(e.target.value);
                   }}
                 />
@@ -214,9 +220,10 @@ console.log(data);
               <div className="flex items-center  ">
                 <input
                   type="date"
-                  className="w-64  h-10 border cursor-pointer focus:outline-none px-2 rounded text-gray-700 font-light hover:bg-gray-100"
+                  className="w-80  h-10 border cursor-pointer focus:outline-none px-2 rounded text-gray-700 font-light hover:bg-gray-100"
                   value={endDate}
                   onChange={(e) => {
+                    validateDates(startDate, e.target.value);
                     setEndDate(e.target.value);
                   }}
                 />
@@ -243,7 +250,7 @@ console.log(data);
         </div>
 
         <div className="flex justify-center ">
-          <div className="   ">
+          <div>
             {!spinner ? (
               <button
                 type="submit"
@@ -262,14 +269,23 @@ console.log(data);
       <div className="container p-5 m-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
         {data?.map((img, index) => {
           return (
-            <div key={index} > 
-              <div className="h-60 sm:h-40 lg:h-50 xl:h-52  content-center overflow-hidden flex-fill " >
-
+            <div key={index}>
+              <div className="h-60 sm:h-40 lg:h-50 xl:h-52  content-center overflow-hidden flex-fill ">
                 {img?.media_type === "video" ? (
-                  <ReactPlayer url={img.url} controls={true} width="100%" height="100%" />
+                  <ReactPlayer
+                    url={img.url}
+                    controls={true}
+                    width="100%"
+                    height="100%"
+                  />
                 ) : (
-                  <img src={img.url} alt={img.title} className="" />
-                ) }
+                  <Link href={`rangeDate/${img?.title}`}>
+                    <img
+                      src={img.url}
+                      alt={img.title}
+                    />
+                  </Link>
+                )}
               </div>
               <div className="flex justify-between">
                 <span> {img.date}</span>
@@ -284,7 +300,6 @@ console.log(data);
 }
 
 export default RangeDate;
-
 
 const images = [
   {
