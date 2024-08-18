@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Swal from "sweetalert2";
 
-export default function imageDetails() {
+export default function ImageDetails() {
   const { slug } = useParams(); // Captura el slug de la URL
   const getSS = JSON.parse(sessionStorage.getItem("NASA-pictures")) || [];
   const [currentObject, setCurrentObject] = useState({});
