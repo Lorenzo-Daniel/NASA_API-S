@@ -13,7 +13,7 @@ const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 function RangeDate() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [data, setData] = useState(JSON.parse(sessionStorage.getItem("NASA-pictures")) || []);
+  const [data, setData] = useState();
   const [spinner, setSpinner] = useState(false);
   const [dateErrors, setDateErrors] = useState({
     start: { error: false, message: "" },
@@ -25,7 +25,11 @@ function RangeDate() {
     end: { success: false },
   });
 
-
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+     setData(JSON.parse(sessionStorage.getItem("NASA-pictures")) || [])
+    }
+  }, []);
 
 console.log(data);
 
