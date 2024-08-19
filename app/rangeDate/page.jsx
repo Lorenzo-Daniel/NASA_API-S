@@ -5,8 +5,9 @@ import { TiTick } from "react-icons/ti";
 import { CircleLoader } from "react-spinners";
 import { RiErrorWarningFill } from "react-icons/ri";
 import dynamic from "next/dynamic";
-import Navbar from "../components/Navbar/Navbar";
 import Link from "next/link";
+import MainComponent from "../components/MainComponent";
+import { dataRangeDate } from "./data";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
@@ -171,7 +172,9 @@ console.log(data);
 
   return (
     <main className="relative">
-      <div className="max-w-screen-md m-auto ">
+      <MainComponent title={dataRangeDate.mainComponent?.title} text1={dataRangeDate.mainComponent.text1} text2={dataRangeDate.mainComponent.text2}/>
+
+      {/* <div className="max-w-screen-md m-auto ">
         <h1 className="text-4xl md:text-5xl font-extralight text-center pt-10">
           Range Date
         </h1>
@@ -179,7 +182,7 @@ console.log(data);
           Choose the range, this must be between 1995-06-16 and today. The
           maximum number of results is 100 pictures.
         </p>
-      </div>
+      </div> */}
       <form onSubmit={searchData}>
         <div className="flex flex-col sm:flex-row items-center sm:items-end justify-center sm:gap-4">
           <div className="h-24 flex flex-col">

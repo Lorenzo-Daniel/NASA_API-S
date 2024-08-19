@@ -1,4 +1,6 @@
 import Link from "next/link";
+import {dataApod} from './data'
+import MainComponent from "../components/MainComponent";
 function apod() {
   const categories = [
     { category: "Single Date", url: "singleDate" },
@@ -7,7 +9,9 @@ function apod() {
   return (
     <main>
       <div className="container m-auto ">
-        <div className="max-w-screen-md m-auto">
+      <MainComponent title={dataApod.mainComponent?.title} text1={dataApod.mainComponent.text1} text2={dataApod.mainComponent.text2}/>
+
+        {/* <div className="max-w-screen-md m-auto">
           <h1 className="text-4xl md:text-5xl font-extralight text-center pt-10">
             APOD
           </h1>
@@ -22,7 +26,7 @@ function apod() {
           <p className="text-gray-500 text-md sm:text-xl font-light p-5  text-center ">
             Choose the information about what you want to consult!
           </p>
-        </div>
+        </div> */}
 
         <div className=" flex justify-center gap-4 p-4 ">
           {categories.map((item, index) => {
