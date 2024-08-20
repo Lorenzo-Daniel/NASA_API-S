@@ -4,7 +4,7 @@ import MainComponent from "../components/MainComponent";
 function apod() {
   const categories = [
     { category: "Single Date", url: "singleDate" },
-    { category: "Range Date", url: "rangeDate" },
+    { category: "Range Date", url: "apod/rangeDate" },
   ];
   return (
     <main>

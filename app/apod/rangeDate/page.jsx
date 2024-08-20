@@ -6,7 +6,7 @@ import { CircleLoader } from "react-spinners";
 import { RiErrorWarningFill } from "react-icons/ri";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import MainComponent from "../components/MainComponent";
+import MainComponent from "../../components/MainComponent";
 import { dataRangeDate } from "./data";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
@@ -15,7 +15,7 @@ function RangeDate() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [data, setData] = useState();
-  const [spinner, setSpinner] = useState(false);
+  const [spinner, setSpinner] = useState(!true);
   const [dateErrors, setDateErrors] = useState({
     start: { error: false, message: "" },
     end: { error: false, message: "" },
@@ -184,7 +184,7 @@ console.log(data);
         </p>
       </div> */}
       <form onSubmit={searchData}>
-        <div className="flex flex-col sm:flex-row items-center sm:items-end justify-center sm:gap-4">
+        <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between sm:gap-2 max-w-2xl m-auto mt-5 px-4">
           <div className="h-24 flex flex-col">
             <div className="flex justify-start items-center">
               <span className="text-md text-black-700 font-light ">
@@ -195,7 +195,7 @@ console.log(data);
               <div className="flex items-center ">
                 <input
                   type="date"
-                  className="w-80  h-10 border cursor-pointer focus:outline-none px-2 rounded text-gray-700 font-light hover:bg-gray-100"
+                  className="w-72  sm:h-16 h-10 border cursor-pointer focus:outline-none px-2 rounded text-gray-700 font-light hover:bg-gray-100"
                   value={startDate}
                   onChange={(e) => {
                     validateDates(e.target.value, "");
@@ -203,7 +203,7 @@ console.log(data);
                   }}
                 />
                 {dateErrors.start.error && (
-                  <RiErrorWarningFill className="text-red-300 text-2xl ml-1 font-light" />
+                  <RiErrorWarningFill className="text-red-300 text-2xl ml-1 font-light " />
                 )}
                 {dateSuccess.start.success && (
                   <TiTick className="text-green-700 text-2xl ml-1 font-light" />
@@ -211,7 +211,7 @@ console.log(data);
               </div>
             </div>
             {dateErrors.start.error && (
-              <div className="text-red-500 text-center text-xs mt-1">
+              <div className="text-red-500 text-start text-xs mt-1">
                 {dateErrors.start.message}
               </div>
             )}
@@ -227,14 +227,14 @@ console.log(data);
               <div className="flex items-center  ">
                 <input
                   type="date"
-                  className="w-80  h-10 border cursor-pointer focus:outline-none px-2 rounded text-gray-700 font-light hover:bg-gray-100"
+                  className="w-72 sm:h-16   h-10 border cursor-pointer focus:outline-none px-2 rounded text-gray-700 font-light hover:bg-gray-100"
                   value={endDate}
                   onChange={(e) => {
                     validateDates(startDate, e.target.value);
                     setEndDate(e.target.value);
                   }}
                 />
-                {dateErrors.end.error ||
+                {dateErrors.end.error || 
                   (dateErrors.range.error && (
                     <RiErrorWarningFill className="text-red-300 text-2xl ml-1 font-light" />
                   ))}
@@ -244,12 +244,12 @@ console.log(data);
               </div>
             </div>
             {dateErrors.end.error && (
-              <div className="text-red-500 text-center text-xs mt-1">
+              <div className="text-red-500 text-start text-xs mt-1">
                 {dateErrors.end.message}
               </div>
             )}
             {dateErrors.range.error && (
-              <div className="text-red-500 text-center text-xs mt-1">
+              <div className="text-red-500 text-start text-xs mt-1">
                 {dateErrors.range.message}
               </div>
             )}
@@ -261,12 +261,12 @@ console.log(data);
             {!spinner ? (
               <button
                 type="submit"
-                className=" h-14 w-24 px-3 py-2 bg-gray-100 border rounded text-gray-500 hover:opacity-200  hover:text-black hover:bg-gray-200 "
+                className=" h-14 w-24 px-3 py-2 bg-gray-100 border rounded text-gray-500 hover:opacity-200  hover:text-black hover:bg-gray-200 sm:mt-5 "
               >
                 Search
               </button>
             ) : (
-              <div className="flex justify-center">
+              <div className="flex justify-center mt-5">
                 <CircleLoader color={"#d4d6da"} size={50} />
               </div>
             )}

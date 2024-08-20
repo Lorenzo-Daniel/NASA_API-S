@@ -3,9 +3,9 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-
+import ReactImageMagnify from 'react-image-magnify'
 function Details() {
-  const { slug } = useParams(); // Captura el slug de la URL
+  const { slug } = useParams(); 
   const getSS = JSON.parse(sessionStorage.getItem("NASA-pictures")) || [];
   const [currentObject, setCurrentObject] = useState({});
   console.log(currentObject);
@@ -50,14 +50,38 @@ function Details() {
         <p className="text-center mt-5 md:m-10 max-w-screen-md">
           {currentObject?.explanation}
         </p>
-        <div className="  overflow-hidden object-container">
-          <img
+        <div className="   ">
+   
+          {/* <img
             onClick={() => popUp()}
             className="lg:max-w-screen-md xl:max-w-screen-md xl-h-80 lg:h-96"
             src={currentObject?.url}
             alt={currentObject?.title}
-          />
+          /> */}
         </div>
+        <ReactImageMagnify
+          {...{
+            smallImage: {
+              alt: currentObject?.title,
+              isFluidWidth: true,
+              src: currentObject?.url,
+            },
+            imageClassName:'flex',
+            largeImage: {
+              src: currentObject?.url,
+              width: 1000, // Ajusta según necesites
+              height: 1000, // Ajusta según necesites
+            },
+            enlargedImageContainerStyle: {
+              transform: 'translateX(-100%)',
+              zIndex: 100,
+            },
+            enlargedImageContainerDimensions: {
+              width: '100%', // Ajusta según necesites
+              height: '100%', // Ajusta según necesites
+            },
+          }}
+        />
       </div>
     </div>
   );

@@ -11,7 +11,6 @@ export default function Home() {
     { category: "podcast", subText: "Houston we had a Podcast!" },
   ];
   
-  console.log(data.mainComponent);
 
   return (
     <main>
