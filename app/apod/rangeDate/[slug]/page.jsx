@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import ReactImageMagnify from 'react-image-magnify'
+// import ReactImageMagnify from 'react-image-magnify'
 function Details() {
   const { slug } = useParams(); 
   const getSS = JSON.parse(sessionStorage.getItem("NASA-pictures")) || [];
@@ -59,7 +59,7 @@ function Details() {
             alt={currentObject?.title}
           /> */}
         </div>
-        <ReactImageMagnify
+        {/* <ReactImageMagnify
           {...{
             smallImage: {
               alt: currentObject?.title,
@@ -81,7 +81,7 @@ function Details() {
               height: '100%', // Ajusta según necesites
             },
           }}
-        />
+        /> */}
       </div>
     </div>
   );
