@@ -3,7 +3,7 @@ import {dataApod} from './data'
 import MainComponent from "../components/MainComponent";
 function apod() {
   const categories = [
-    { category: "Single Date", url: "singleDate" },
+    { category: "Single Date", url: "apod/singleDate" },
     { category: "Range Date", url: "apod/rangeDate" },
   ];
   return (

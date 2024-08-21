@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
+import Image from "next/image";
 import { TiTick } from "react-icons/ti";
 import { CircleLoader } from "react-spinners";
 import { RiErrorWarningFill } from "react-icons/ri";
@@ -277,7 +278,7 @@ console.log(data);
         {data?.map((img, index) => {
           return (
             <div key={index}>
-              <div className="h-60 sm:h-40 lg:h-50 xl:h-52  content-center overflow-hidden flex-fill ">
+              <div className="h-60 sm:h-40 lg:h-50 xl:h-52 flex justify-center overflow-hidden flex-fill ">
                 {img?.media_type === "video" ? (
                   <ReactPlayer
                     url={img.url}
@@ -287,9 +288,11 @@ console.log(data);
                   />
                 ) : (
                   <Link href={`rangeDate/${img?.title}`}>
-                    <img
+                    <Image
                       src={img.url}
                       alt={img.title}
+                      width={600}
+                      height={0}
                     />
                   </Link>
                 )}
