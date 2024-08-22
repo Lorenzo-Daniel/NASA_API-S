@@ -12,7 +12,18 @@ const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 function SingleDate() {
   const [selectedDate, setSelectedDate] = useState("");
-  const [data, setData] = useState({});
+  const [data, setData] = useState({
+    concepts: "concept_tags functionality turned off in current service",
+    date: "2024-01-19",
+    explanation:
+      "Jupiter, our Solar System's ruling gas giant, is also the fastest spinning planet, rotating once in less than 10 hours. The gas giant doesn't rotate like a solid body though. A day on Jupiter is about 9 hours and 56 minutes long at the poles, decreasing to 9 hours and 50 minutes near the equator. The giant planet's fast rotation creates strong jet streams, separating its clouds into planet girdling bands of dark belts and bright zones. You can easily follow Jupiter's rapid rotation in this sharp sequence of images from the night of January 15, all taken with a camera and small telescope outside of Paris, France. Located just south of the equator, the giant planet's giant storm system, also known as the Great Red Spot, can be seen moving left to right with the planet's rotation. From lower left to upper right, the sequence spans about 2 hours and 30 minutes.",
+    hdurl:
+      "https://apod.nasa.gov/apod/image/2401/2024_01_15-Jup-2h30-Chronograph.png",
+    media_type: "image",
+    service_version: "v1",
+    title: "Jupiter over 2 Hours and 30 Minutes",
+    url: "https://apod.nasa.gov/apod/image/2401/2024_01_15-Jup-2h30-Chronograph600.png",
+  });
   const [spinner, setSpinner] = useState(!true);
   const [dateErrors, setDateErrors] = useState({
     selectedDate: { error: false, message: "" },
@@ -20,6 +31,7 @@ function SingleDate() {
   const [dateSuccess, setDateSuccess] = useState({
     selectedDate: { success: false },
   });
+  console.log(data);
 
   const minDate = new Date("1995-06-16").getTime();
   const maxDate = new Date().getTime();
@@ -157,15 +169,15 @@ function SingleDate() {
       </form>
       {!spinner && (
         <div>
-          <div className="flex flex-col-reverse  items-center justify-center mt-5 p-5">
-            <p className="text-center mt-5 md:m-10 max-w-screen-md">
-              {explanation}
-            </p>
+          <div className="flex flex-col  items-center justify-center mt-5 p-5">
             <div className="flex justify-center   ">
               {media_type === "video" ? (
                 <ReactPlayer url={url} controls={true} />
               ) : (
                 <div className="flex flex-col md:max-w-xl ">
+                  <div className="flex justify-start mb-1 text-gray-500 ">
+                    <h3 className="md:text-2xl ">{title}</h3>
+                  </div>
                   <InnerImageZoom
                     src={url}
                     zoomSrc={url}
@@ -174,13 +186,15 @@ function SingleDate() {
                     moveType="drag"
                     hideCloseButton={false}
                   />
-                  <div className="flex justify-between">
-                    <span className="text-md  text-start ">{title}</span>
+                  <div className="flex justify-start text-gray-500 ">
                     <span> {date}</span>
                   </div>
                 </div>
               )}
             </div>
+            <p className="text-center mt-5 md:m-10 max-w-screen-md ">
+              {explanation}
+            </p>
           </div>
         </div>
       )}
