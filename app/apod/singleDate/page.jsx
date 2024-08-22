@@ -181,7 +181,7 @@ function SingleDate() {
                     zoomScale={1}
                     zoomType="click"
                     moveType="drag"
-                    hideCloseButton={false}
+                    hideCloseButton={true}
                   />
                   <div className="flex justify-start text-gray-500 ">
                     <span> {date}</span>
