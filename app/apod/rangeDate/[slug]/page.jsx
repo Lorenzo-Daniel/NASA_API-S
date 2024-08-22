@@ -11,6 +11,7 @@ function Details() {
   const getSS = JSON.parse(sessionStorage.getItem("NASA-pictures")) || [];
   const [currentObject, setCurrentObject] = useState(null);
 
+
   useEffect(() => {
     const findObject = () => {
       const title = decodeURIComponent(slug);
@@ -40,7 +41,7 @@ function Details() {
         <p className="text-center mt-5 md:m-10 max-w-screen-md">
           {explanation}
         </p>
-        <div className=" md:max-w-xl">
+        <div className=" md:max-w-xl" >
           <InnerImageZoom
             src={url}
             zoomSrc={url}
