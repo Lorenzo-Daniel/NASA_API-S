@@ -15,7 +15,7 @@ function RangeDate() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [data, setData] = useState();
-  const [spinner, setSpinner] = useState(!true);
+  const [isLoading, setIsLoading] = useState(false);
   const [dateErrors, setDateErrors] = useState({
     start: { error: false, message: "" },
     end: { error: false, message: "" },
@@ -31,7 +31,7 @@ function RangeDate() {
       setData(JSON.parse(sessionStorage.getItem("NASA-pictures")) || []);
     }
   }, []);
-
+  const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
   const minDate = new Date("1995-06-16").getTime();
   const maxDate = new Date().getTime();
 
@@ -142,7 +142,7 @@ function RangeDate() {
 
   const getAPI = async (start, end) => {
     try {
-      setSpinner(true);
+      setIsLoading(true);
       const request = await fetch(
         `https://api.nasa.gov/planetary/apod?api_key=teHf0lemJMiaPjInzdphYVK6bDuGLSaFt8jO8IIj&start_date=${start}&end_date=${end}`
       );
@@ -159,10 +159,10 @@ function RangeDate() {
         start: { success: false },
         end: { success: false },
       });
-      setSpinner(false);
+      setIsLoading(false);
       setData(response);
     } catch (error) {
-      setSpinner(false);
+      setIsLoading(false);
       console.error(error);
       alert("Something went wrong. Please try again.");
     }
@@ -250,7 +250,7 @@ function RangeDate() {
 
         <div className="flex justify-center ">
           <div>
-            {!spinner ? (
+            {!isLoading ? (
               <button
                 type="submit"
                 className=" h-14 w-24 px-3 py-2 bg-gray-100 border rounded text-gray-500 hover:opacity-200  hover:text-black hover:bg-gray-200 sm:mt-5 "
@@ -266,35 +266,57 @@ function RangeDate() {
         </div>
       </form>
       <div className="container p-5 m-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
-        {data?.map((img, index) => {
-          return (
-            <div key={index}>
-              <div className="h-60 sm:h-40 lg:h-50 xl:h-52 flex justify-center overflow-hidden flex-fill ">
-                {img?.media_type === "video" ? (
-                  <ReactPlayer
-                    url={img.url}
-                    controls={true}
-                    width="100%"
-                    height="100%"
-                  />
-                ) : (
-                  <Link href={`rangeDate/${img?.title}`}>
+        {!isLoading
+          ? data?.map((img, index) => {
+              return (
+                <div key={index}>
+                  <div className="h-60 sm:h-40 lg:h-50 xl:h-52 flex justify-center overflow-hidden flex-fill ">
+                    {img?.media_type === "video" ? (
+                      <ReactPlayer
+                        url={img.url}
+                        controls={true}
+                        width="100%"
+                        height="100%"
+                      />
+                    ) : (
+                      <Link href={`rangeDate/${img?.title}`}>
+                        <Image
+                          src={img.url}
+                          alt={img.title}
+                          width={600}
+                          height={0}
+                        />
+                      </Link>
+                    )}
+                  </div>
+                  <div className="flex justify-between">
+                    <span> {img.date}</span>
+                    <span className="">{img.media_type}</span>
+                  </div>
+                </div>
+              );
+            })
+          : array?.map((img, index) => {
+              return (
+                <div key={index}>
+                  <div className="h-60 sm:h-40 lg:h-50 xl:h-52 flex justify-center overflow-hidden flex-fill bg-gray-100 animate__animated animate__flash animate__infinite 	 animate__slower">
                     <Image
-                      src={img.url}
-                      alt={img.title}
+                      src={""}
+                      alt={""}
                       width={600}
                       height={0}
+                      className="border rounded "
                     />
-                  </Link>
-                )}
-              </div>
-              <div className="flex justify-between">
-                <span> {img.date}</span>
-                <span className="">{img.media_type}</span>
-              </div>
-            </div>
-          );
-        })}
+                  </div>
+                  <div className="flex justify-between mt-1 ">
+                    <span className="bg-gray-100 w-24 h-4 border rounded animate__animated animate__flash animate__infinite 	 animate__slower">
+                      {" "}
+                    </span>
+                    <span className="bg-gray-100 w-16 h-4 border rounded animate__animated animate__flash animate__infinite 	 animate__slower"></span>
+                  </div>
+                </div>
+              );
+            })}
       </div>
     </main>
   );
