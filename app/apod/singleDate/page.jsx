@@ -13,16 +13,13 @@ const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 function SingleDate() {
   const [selectedDate, setSelectedDate] = useState("");
   const [data, setData] = useState({
-    concepts: "concept_tags functionality turned off in current service",
-    date: "2024-01-19",
+    date: "2024-03-25",
     explanation:
-      "Jupiter, our Solar System's ruling gas giant, is also the fastest spinning planet, rotating once in less than 10 hours. The gas giant doesn't rotate like a solid body though. A day on Jupiter is about 9 hours and 56 minutes long at the poles, decreasing to 9 hours and 50 minutes near the equator. The giant planet's fast rotation creates strong jet streams, separating its clouds into planet girdling bands of dark belts and bright zones. You can easily follow Jupiter's rapid rotation in this sharp sequence of images from the night of January 15, all taken with a camera and small telescope outside of Paris, France. Located just south of the equator, the giant planet's giant storm system, also known as the Great Red Spot, can be seen moving left to right with the planet's rotation. From lower left to upper right, the sequence spans about 2 hours and 30 minutes.",
-    hdurl:
-      "https://apod.nasa.gov/apod/image/2401/2024_01_15-Jup-2h30-Chronograph.png",
-    media_type: "image",
+      "What does a supernova remnant sound like? Although sound is a compression wave in matter and does not carry into empty space, interpretive sound can help listeners appreciate and understand a visual image of a supernova remnant in a new way. Recently, the Jellyfish Nebula (IC 443) has been sonified quite creatively.  In the featured sound-enhanced video, when an imaginary line passes over a star, the sound of a drop falling into water is played, a sound particularly relevant to the nebula's aquatic namesake.  Additionally, when the descending line crosses gas that glows red, a low tone is played, while green sounds a middle tone, and blue produces a tone with a relatively high pitch. Light from the supernova that created the Jellyfish Nebula left approximately 35,000 years ago, when humanity was in the stone age.  The nebula will slowly disperse over the next million years, although the explosion also created a dense neutron star which will remain indefinitely.",
+    media_type: "video",
     service_version: "v1",
-    title: "Jupiter over 2 Hours and 30 Minutes",
-    url: "https://apod.nasa.gov/apod/image/2401/2024_01_15-Jup-2h30-Chronograph600.png",
+    title: "Sonified: The Jellyfish Nebula Supernova Remnant",
+    url: "https://youtube.com/embed/NqBfQeJqkfU?rel=0",
   });
   const [spinner, setSpinner] = useState(!true);
   const [dateErrors, setDateErrors] = useState({
@@ -109,7 +106,7 @@ function SingleDate() {
   const { url, explanation, title, media_type, date } = data;
 
   return (
-    <main className="relative">
+    <main className="">
       <MainComponent
         title={singleDate.mainComponent?.title}
         text1={singleDate.mainComponent.text1}
@@ -170,9 +167,18 @@ function SingleDate() {
       {!spinner && (
         <div>
           <div className="flex flex-col  items-center justify-center mt-5 p-5">
-            <div className="flex justify-center   ">
+            <div className="flex justify-center  ">
               {media_type === "video" ? (
-                <ReactPlayer url={url} controls={true} />
+                <div className="">
+
+                  <ReactPlayer
+                    url={url}
+                    controls={true}
+                    width={'100%'}
+                    height={'100%'}
+                    // className='react-player'
+                  />
+                </div>
               ) : (
                 <div className="flex flex-col md:max-w-xl ">
                   <div className="flex justify-start mb-1 text-gray-500 ">
