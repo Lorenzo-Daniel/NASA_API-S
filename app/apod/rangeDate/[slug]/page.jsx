@@ -48,7 +48,7 @@ function Details() {
             zoomScale={1}
             zoomType="click"
             moveType="drag"
-            hideCloseButton={false}
+            hideCloseButton={true}
           />
         </div>
       </div>
