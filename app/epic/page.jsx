@@ -8,7 +8,6 @@ import dynamic from "next/dynamic";
 import MainComponent from "../components/MainComponent";
 import { dataEpic } from "./data";
 import Image from "next/image";
-// import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
