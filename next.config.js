@@ -4,12 +4,15 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'apod.nasa.gov', // Solo el dominio, sin la ruta
+        protocol: "https",
+        hostname: "epic.gsfc.nasa.gov",
+      },
+      {
+        protocol: "https",
+        hostname: "apod.nasa.gov",
       },
     ],
   },
 };
 
-
-module.exports = nextConfig
+module.exports = nextConfig;

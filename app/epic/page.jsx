@@ -1,21 +1,26 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import { TiTick } from "react-icons/ti";
 import { CircleLoader } from "react-spinners";
 import { RiErrorWarningFill } from "react-icons/ri";
 import dynamic from "next/dynamic";
-import MainComponent from "../../components/MainComponent";
-import { singleDate } from "./data";
-import InnerImageZoom from "react-inner-image-zoom";
+import MainComponent from "../components/MainComponent";
+import { dataEpic } from "./data";
+import Image from "next/image";
+// import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from "react-responsive-carousel";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2";
 
-function SingleDate() {
+function epic() {
   const [selectedDate, setSelectedDate] = useState("");
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [carouselIndicators, setCarouselIndicators] = useState(false);
   const [dateErrors, setDateErrors] = useState({
     selectedDate: { error: false, message: "" },
   });
@@ -23,7 +28,11 @@ function SingleDate() {
     selectedDate: { success: false },
   });
 
-  const minDate = new Date("1995-06-16").getTime();
+  const arrayForSkeleton = [
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
+  ];
+
+  const minDate = new Date("2015-07-5").getTime();
   const maxDate = new Date().getTime();
 
   const validateDates = (selectedDate) => {
@@ -61,11 +70,15 @@ function SingleDate() {
         selectedDate: { success: true },
       }));
     }
-
     return valid;
   };
 
-  const find = () => {};
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setData(JSON.parse(sessionStorage.getItem("NASA-EPIC")) || []);
+    }
+  }, []);
+
   const searchData = (e) => {
     e.preventDefault();
 
@@ -78,9 +91,10 @@ function SingleDate() {
     try {
       setIsLoading(true);
       const request = await fetch(
-        `https://api.nasa.gov/planetary/apod?api_key=teHf0lemJMiaPjInzdphYVK6bDuGLSaFt8jO8IIj&date=${selectedDate}&concept_tags=True`
+        `https://api.nasa.gov/EPIC/api/natural/date/${selectedDate}?api_key=DEMO_KEY`
       );
       const response = await request.json();
+      sessionStorage.setItem("NASA-EPIC", JSON.stringify(response));
       setSelectedDate("");
       setDateErrors({
         selectedDate: { error: false, message: "" },
@@ -88,8 +102,11 @@ function SingleDate() {
       setDateSuccess({
         selectedDate: { success: false },
       });
-      setIsLoading(false);
+
       setData(response);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 3000);
     } catch (error) {
       setTimeout(() => {
         setIsLoading(false);
@@ -108,14 +125,28 @@ function SingleDate() {
     }
   };
 
-  const { url, explanation, title, media_type, date } = data;
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCarouselIndicators(window.innerWidth > 768);
+    }
+
+    const handleResize = () => {
+      setCarouselIndicators(window.innerWidth > 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <main className="">
       <MainComponent
-        title={singleDate.mainComponent?.title}
-        text1={singleDate.mainComponent.text1}
-        text2={singleDate.mainComponent.text2}
+        title={dataEpic.mainComponent?.title}
+        text1={dataEpic.mainComponent.text1}
+        text2={dataEpic.mainComponent.text2}
       />
       <form onSubmit={searchData}>
         <div className="flex flex-col  items-center mt-5 ">
@@ -169,55 +200,59 @@ function SingleDate() {
           </div>
         </div>
       </form>
-      {!isLoading ? (
-        <div>
-          <div className="flex flex-col  items-center justify-center mt-5 p-5">
-            <div className="flex justify-center  ">
-              {media_type === "video" ? (
-                <div className="">
-                  <ReactPlayer
-                    url={url}
-                    controls={true}
-                    width={"100%"}
-                    height={"100%"}
-                    // className='react-player'
-                  />
+      <Carousel
+        rightArrow={"next"}
+        showArrows={true}
+        showIndicators={carouselIndicators}
+        className="bg-black m-5 "
+        showThumbs={false}
+      >
+        {!isLoading
+          ? data?.map((obj, index) => {
+              const fullDate = new Date(data[0].date);
+              const year = fullDate.getFullYear().toString();
+              const month = ("0" + (fullDate.getMonth() + 1)).slice(-2);
+              const date = ("0" + fullDate.getDate()).slice(-2);
+              const formatedDate = `${year}/${month}/${date}`;
+              return (
+                <div
+                  key={index}
+                  className="flex justify-center items-center relative "
+                >
+                  <Link href={`epic/${obj?.identifier}`}>
+                    <Image
+                      src={`https://epic.gsfc.nasa.gov/archive/natural/${formatedDate}/png/${obj.image}.png`}
+                      alt={obj.identifier}
+                      width={800}
+                      height={0}
+                    />
+                  </Link>
+                  <span className="text-white absolute right-0 left-0 bottom-0 md:bottom-8">
+                    Date: {obj.date}
+                  </span>
                 </div>
-              ) : (
-                <div className="flex flex-col md:max-w-xl ">
-                  <div className="flex justify-start mb-1 text-gray-500 ">
-                    <h3 className="md:text-2xl ">{title}</h3>
-                  </div>
-                  <InnerImageZoom
-                    src={url}
-                    zoomSrc={url}
-                    zoomScale={1}
-                    zoomType="click"
-                    moveType="drag"
-                    hideCloseButton={true}
-                  />
-                  <div className="flex justify-start text-gray-500 ">
-                    <span> {date}</span>
+              );
+            })
+          : arrayForSkeleton?.map((img, index) => {
+              return (
+                <div key={index}>
+                  <div className="h-96 flex justify-center overflow-hidden flex-fill bg-gray-100 animate__animated animate__fadeOut animate__infinite 	 animate__slower">
+                    <Image
+                      src={""}
+                      alt={""}
+                      width={600}
+                      height={0}
+                      className="border rounded "
+                    />
                   </div>
                 </div>
-              )}
-            </div>
-            <p className="text-center mt-5 md:m-10 max-w-screen-md ">
-              {explanation}
-            </p>
-          </div>
-        </div>
-      ) : (
-        <div className="flex justify-center mt-5  ">
-          <div className="flex flex-col">
-            <span className="w-64 h-5 bg-gray-100 my-1 rounded px-1  rounded animate__animated animate__fadeIn animate__infinite 	 animate__slow"></span>
-            <span className="h-96 bg-gray-100 w-80 md:w-96 rounded   rounded animate__animated animate__fadeIn animate__infinite 	 animate__slow "></span>
-            <span className="w-32 h-5 bg-gray-100 my-1 rounded px-1  rounded animate__animated animate__fadeIn animate__infinite 	 animate__slow" />
-          </div>
-        </div>
-      )}
+              );
+            })}
+      </Carousel>
     </main>
   );
 }
 
-export default SingleDate;
+//
+
+export default epic;

@@ -8,7 +8,8 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import MainComponent from "../../components/MainComponent";
 import { dataRangeDate } from "./data";
-
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2";
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 function RangeDate() {
@@ -162,9 +163,20 @@ function RangeDate() {
       setIsLoading(false);
       setData(response);
     } catch (error) {
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+        Swal.fire({
+          title: "Something went wrong! Try again!",
+          showConfirmButton: false,
+          showCloseButton: true,
+          customClass: {
+            popup: "h-60",
+            title: "font-extralight ",
+            closeButton: "hover:text-gray-500",
+          },
+        });
+      }, 3000);
       console.error(error);
-      alert("Something went wrong. Please try again.");
     }
   };
 
@@ -299,7 +311,7 @@ function RangeDate() {
           : array?.map((img, index) => {
               return (
                 <div key={index}>
-                  <div className="h-60 sm:h-40 lg:h-50 xl:h-52 flex justify-center overflow-hidden flex-fill bg-gray-100 animate__animated animate__flash animate__infinite 	 animate__slower">
+                  <div className="h-60 sm:h-40 lg:h-50 xl:h-52 flex justify-center overflow-hidden flex-fill bg-gray-100 animate__animated animate__fadeIn animate__infinite 	 animate__slow">
                     <Image
                       src={""}
                       alt={""}
@@ -309,10 +321,8 @@ function RangeDate() {
                     />
                   </div>
                   <div className="flex justify-between mt-1 ">
-                    <span className="bg-gray-100 w-24 h-4 border rounded animate__animated animate__flash animate__infinite 	 animate__slower">
-                      {" "}
-                    </span>
-                    <span className="bg-gray-100 w-16 h-4 border rounded animate__animated animate__flash animate__infinite 	 animate__slower"></span>
+                    <span className="bg-gray-100 w-24 h-4 border rounded animate__animated animate__fadeIn animate__infinite 	 animate__slow"></span>
+                    <span className="bg-gray-100 w-16 h-4 border rounded animate__animated animate__fadeIn animate__infinite 	 animate__slow"></span>
                   </div>
                 </div>
               );
