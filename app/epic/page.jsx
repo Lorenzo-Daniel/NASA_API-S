@@ -15,7 +15,7 @@ import { Carousel } from "react-responsive-carousel";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2";
 
-function epic() {
+function Epic() {
   const [selectedDate, setSelectedDate] = useState("");
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -254,4 +254,4 @@ function epic() {
 
 //
 
-export default epic;
+export default Epic;
