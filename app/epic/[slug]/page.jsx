@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import { CircleLoader } from "react-spinners";
-import React, { Suspense } from "react";
 import DataBlock from "./DataBlock";
 
 function DetailsEpic() {

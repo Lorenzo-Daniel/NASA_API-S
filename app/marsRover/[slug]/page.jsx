@@ -35,14 +35,6 @@ function DetailsMarsRover() {
   const { landing_date, launch_date,name } = rover;
   const { full_name } = camera;
 
-  const transformObjToArray = (obj) => {
-    return Object.entries(obj).map(([key, value]) => ({
-      name: key,
-      value: value,
-    }));
-  };
-
-
 
   return (
     <div className="flex flex-col items-center h-dvh  bg-black">

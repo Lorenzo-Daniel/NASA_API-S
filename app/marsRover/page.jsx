@@ -10,7 +10,6 @@ import MainComponent from "../components/MainComponent";
 import { dataMarsRover } from "./data";
 import "sweetalert2";
 import { validateDates,getAPI } from "./functionsMarsRover";
-import Swal from "sweetalert2";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
