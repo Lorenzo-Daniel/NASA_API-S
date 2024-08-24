@@ -61,11 +61,7 @@ function DetailsMarsRover() {
           </p>    <p className="text-white text-center flex justify-start px-2 items-center">
           launch date:  {launch_date}
           </p> 
-          {dataNameLists.map((data, index) => {
-            return (
-              <DataBlock key={index} title={data.name} array={data.array} />
-            );
-          })}
+      
         </div>
       </div>
     </div>
