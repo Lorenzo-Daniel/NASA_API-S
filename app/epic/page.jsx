@@ -68,7 +68,6 @@ function Epic() {
       <MainComponent
         title={dataEpic.mainComponent?.title}
         text1={dataEpic.mainComponent.text1}
-        text2={dataEpic.mainComponent.text2}
       />
       <form onSubmit={searchData}>
         <div className="flex flex-col  items-center mt-5 ">
