@@ -1,20 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import Image  from "next/image";
 import Link from "next/link";
+import MainComponent from "../components/MainComponent";
+import dynamic from "next/dynamic";
 import { TiTick } from "react-icons/ti";
 import { CircleLoader } from "react-spinners";
 import { RiErrorWarningFill } from "react-icons/ri";
-import dynamic from "next/dynamic";
-import MainComponent from "../components/MainComponent";
 import { dataEpic } from "./data";
-import Image from "next/image";
-import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
-const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
-import Swal from "sweetalert2/dist/sweetalert2.js";
-import "sweetalert2";
+import { getAPI,validateDates } from "./[slug]/functionsEpic";
 
+const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 function Epic() {
   const [selectedDate, setSelectedDate] = useState("");
   const [data, setData] = useState([]);
@@ -31,47 +30,7 @@ function Epic() {
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
   ];
 
-  const minDate = new Date("2015-07-5").getTime();
-  const maxDate = new Date().getTime();
-
-  const validateDates = (selectedDate) => {
-    let valid = true;
-
-    if (
-      selectedDate === "" ||
-      new Date(selectedDate).getTime() < minDate ||
-      new Date(selectedDate).getTime() > maxDate
-    ) {
-      setDateErrors((prevErrors) => ({
-        ...prevErrors,
-        selectedDate: {
-          error: true,
-          message: `Date must be between ${new Date(
-            minDate
-          ).toLocaleDateString()} and ${new Date(
-            maxDate
-          ).toLocaleDateString()}.`,
-        },
-      }));
-      setDateSuccess((prevSuccess) => ({
-        ...prevSuccess,
-        selectedDate: { success: false },
-      }));
-      valid = false;
-      return;
-    } else {
-      setDateErrors((prevErrors) => ({
-        ...prevErrors,
-        selectedDate: { error: false, message: "" },
-      }));
-      setDateSuccess((prevSuccess) => ({
-        ...prevSuccess,
-        selectedDate: { success: true },
-      }));
-    }
-    return valid;
-  };
-
+ 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setData(JSON.parse(sessionStorage.getItem("NASA-EPIC")) || []);
@@ -81,48 +40,12 @@ function Epic() {
   const searchData = (e) => {
     e.preventDefault();
 
-    if (validateDates(selectedDate)) {
-      getAPI(selectedDate);
+    if (validateDates(selectedDate,setDateErrors,setDateSuccess)) {
+      getAPI(selectedDate,setSelectedDate,setDateErrors,setDateSuccess,setData,setIsLoading);
     }
   };
 
-  const getAPI = async (selectedDate) => {
-    try {
-      setIsLoading(true);
-      const request = await fetch(
-        `https://api.nasa.gov/EPIC/api/natural/date/${selectedDate}?api_key=DEMO_KEY`
-      );
-      const response = await request.json();
-      sessionStorage.setItem("NASA-EPIC", JSON.stringify(response));
-      setSelectedDate("");
-      setDateErrors({
-        selectedDate: { error: false, message: "" },
-      });
-      setDateSuccess({
-        selectedDate: { success: false },
-      });
 
-      setData(response);
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 3000);
-    } catch (error) {
-      setTimeout(() => {
-        setIsLoading(false);
-        Swal.fire({
-          title: "Something went wrong! Try again!",
-          showConfirmButton: false,
-          showCloseButton: true,
-          customClass: {
-            popup: "h-60",
-            title: "font-extralight ",
-            closeButton: "hover:text-gray-500",
-          },
-        });
-      }, 3000);
-      console.error(error);
-    }
-  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -162,7 +85,7 @@ function Epic() {
                   className="w-72  sm:h-16 h-10 border cursor-pointer focus:outline-none px-2 rounded text-gray-700 font-light hover:bg-gray-100"
                   value={selectedDate}
                   onChange={(e) => {
-                    validateDates(e.target.value, "");
+                    validateDates(e.target.value,setDateErrors,setDateSuccess);
                     setSelectedDate(e.target.value);
                   }}
                 />

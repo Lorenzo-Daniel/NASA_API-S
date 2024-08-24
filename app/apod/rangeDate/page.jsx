@@ -282,7 +282,7 @@ function RangeDate() {
           ? data?.map((img, index) => {
               return (
                 <div key={index}>
-                  <div className="h-60 sm:h-40 lg:h-50 xl:h-52 flex justify-center overflow-hidden flex-fill ">
+                  <div className="h-60 sm:h-40 lg:h-50 xl:h-52 flex justify-center items-center overflow-hidden flex-fill border rounded p-2  ">
                     {img?.media_type === "video" ? (
                       <ReactPlayer
                         url={img.url}
@@ -301,7 +301,7 @@ function RangeDate() {
                       </Link>
                     )}
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between p-2">
                     <span> {img.date}</span>
                     <span className="">{img.media_type}</span>
                   </div>

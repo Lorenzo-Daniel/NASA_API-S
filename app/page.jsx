@@ -7,7 +7,7 @@ export default function Home() {
     { category: "apod", subText: "Astronomy Picture Of the Day" },
     { category: "asteroids", subText: "Asteroids information" },
     { category: "epic", subText: "Earth Polychromatic Imaging Camera" },
-    { category: "mars rover", subText: "Mars Rover Photos" },
+    { category: "marsRover", subText: "Mars Rover Photos" },
     { category: "podcast", subText: "Houston we had a Podcast!" },
   ];
   
