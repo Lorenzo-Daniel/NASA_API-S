@@ -8,7 +8,6 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import MainComponent from "../components/MainComponent";
 import { dataMarsRover } from "./data";
-import "sweetalert2";
 import { validateDates,getAPI } from "./functionsMarsRover";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
