@@ -16,18 +16,6 @@ export default function Home() {
     <main>
       <div className="container m-auto ">
         <MainComponent title={data.mainComponent?.title} text1={data.mainComponent.text1} text2={data.mainComponent.text2}/>
-        {/* <div className="max-w-screen-md m-auto">
-          <h1 className="text-4xl md:text-5xl font-extralight text-center pt-10">
-            NASA APIS
-          </h1>
-          <p className="text-gray-500 font-light text-md sm:text-xl  p-5 text-center ">
-            On this page you will find public information provided by NASA APIS
-            related to their work.
-          </p>
-          <p className="text-gray-500 text-md sm:text-xl font-light pb-5 p-10 pt-0 text-center ">
-            Choose the information about what you want to consult!{" "}
-          </p>
-        </div> */}
         <div className="grid p-4 grid-cols-2 grid-rows-3 md:grid-rows-3  lg:grid-rows-2 gap-4 md:grid-cols-3 ">
           {categories.map((item, index) => {
             return (
