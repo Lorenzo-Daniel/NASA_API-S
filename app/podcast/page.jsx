@@ -115,6 +115,7 @@ function Podcast() {
               options={options}
               className={`${loading ? "  px-2 animate__animated animate__fadeIn animate__infinite 	 animate__slow max-w-sm m-auto" : "max-w-sm m-auto px-2"}`}
               isDisabled = {loading}
+              placeholder='Select chapter...'
             />
           </div>
       
