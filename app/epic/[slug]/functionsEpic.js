@@ -55,7 +55,6 @@ export const getAPI = async (
     );
     const response = await request.json();
     sessionStorage.setItem("NASA-EPIC", JSON.stringify(response));
-    setSelectedDate("");
     setDateErrors({
       selectedDate: { error: false, message: "" },
     });
