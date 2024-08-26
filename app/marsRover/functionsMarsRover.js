@@ -34,7 +34,7 @@ export const getAPI = async (
     } else {
       // Guarda todos los resultados en sessionStorage
       sessionStorage.setItem("marsRover", JSON.stringify(res.photos));
-      setPetitionLength(res.photos.length); // Establece la longitud total de resultados
+      setPetitionLength(res.photos.length)
       setData(res.photos.slice(0, 25)); // Muestra solo las primeras 25 imágenes
       setIsLoading(false);
     }
@@ -59,4 +59,4 @@ export const getAPI = async (
   }
 };
 
-const arrayForSkeleton = Array.from({ length: 20 }, (_, i) => i + 1); 
+

@@ -1,5 +1,4 @@
 "use client";
-
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import InnerImageZoom from "react-inner-image-zoom";
@@ -32,36 +31,32 @@ function DetailsMarsRover() {
   }
 
   const { img_src, earth_date, camera, rover } = currentObject;
-  const { landing_date, launch_date,name } = rover;
+  const { landing_date, launch_date, name } = rover;
   const { full_name } = camera;
 
-
   return (
-    <div className="flex flex-col items-center h-dvh  bg-black">
-      <div className=" mt-10">
-        <InnerImageZoom
-          src={img_src}
-          zoomSrc={img_src}
-          zoomScale={1}
-          zoomType="click"
-          moveType="drag"
-          hideCloseButton={true}
-        />
-        <div className="">
-          <p className="text-white text-center flex  justify-start px-2 items-center ">
-             {name}
-          </p>
-          <p className="text-white text-center flex  justify-start px-2 items-center">
-           {full_name}
-          </p>
-          <p className="text-white text-center flex  justify-start px-2 items-center">
-            Date: {earth_date}
-          </p>    <p className="text-white text-center flex  justify-start px-2 items-center">
-          landing date :    {landing_date}
-          </p>    <p className="text-white text-center flex justify-start px-2 items-center">
-          launch date:  {launch_date}
-          </p> 
-      
+    <div className="flex flex-col items-center  min-h-screen   bg-black">
+      <div className="flex flex-col items-center ">
+        <div className="flex justify-center mt-10 overflow-hidden max-w-[700px] max-h-[500px] object-center">
+          <InnerImageZoom
+            src={img_src}
+            zoomSrc={img_src}
+            zoomScale={1}
+            zoomType="click"
+            moveType="drag"
+            hideCloseButton={true}
+            width={"100%"}
+          />
+        </div>
+        <div className="text-white mt-5 ">
+          <p>{name}</p>
+          <p>{full_name}</p>
+          <p>Date: {earth_date}</p>
+          <p>landing date : {landing_date}</p>
+          <p>launch date: {launch_date}</p>
+          <a href={img_src} className="text-gray-700 ">
+            go to original source
+          </a>
         </div>
       </div>
     </div>

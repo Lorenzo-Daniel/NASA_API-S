@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 import 'animate.css'
+
 export const metadata = {
   title: "NASA API's",
   description: "HOME",

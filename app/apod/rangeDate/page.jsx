@@ -8,7 +8,8 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import MainComponent from "../../components/MainComponent";
 import { dataRangeDate } from "./data";
-import Swal from "sweetalert2/dist/sweetalert2.js";
+import ResponsivePagination from "react-responsive-pagination";
+import "react-responsive-pagination/themes/minimal.css";
 import "sweetalert2";
 import { swal } from "@/app/helpers/swal";
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
@@ -30,7 +31,7 @@ function RangeDate() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setData(JSON.parse(sessionStorage.getItem("NASA-pictures")) || []);
+      setData(JSON.parse(sessionStorage.getItem("NASA-apod")) || []);
     }
   }, []);
   const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
@@ -166,7 +167,7 @@ function RangeDate() {
     } catch (error) {
       setTimeout(() => {
         setIsLoading(false);
-   swal("Something went wrong! Try again!")
+        swal("Something went wrong! Try again!");
       }, 3000);
       console.error(error);
     }
@@ -267,6 +268,9 @@ function RangeDate() {
               </div>
             )}
           </div>
+        </div>
+        <div className="max-w-xl m-auto mt-5 ">
+       
         </div>
       </form>
       <div className="container p-5 m-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">

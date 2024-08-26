@@ -4,31 +4,30 @@ import Image from "next/image";
 import { TiTick } from "react-icons/ti";
 import { CircleLoader } from "react-spinners";
 import { RiErrorWarningFill } from "react-icons/ri";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import MainComponent from "../components/MainComponent";
 import { dataMarsRover } from "./data";
-import { validateDates, getAPI } from "./functionsMarsRover";
+import { getAPI } from "./functionsMarsRover";
 import ResponsivePagination from "react-responsive-pagination";
 import "react-responsive-pagination/themes/minimal.css";
 import { validateSingleDate } from "../helpers/validationDates";
-
-const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
+import PaginationComponent from "../components/PaginationComponent";
 
 function MarsRover() {
   const [selectedDate, setSelectedDate] = useState("");
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [petitionLength, setPetitionLength] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [dateErrors, setDateErrors] = useState({
     selectedDate: { error: false, message: "" },
   });
   const [dateSuccess, setDateSuccess] = useState({
     selectedDate: { success: false },
   });
-  const [petitionLength, setPetitionLength] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const arrayForSkeleton = Array.from({ length: 20 }, (_, i) => i + 1);
+  
+  const arrayForSkeleton = Array.from({ length: 20 }, (_, i) => i);
 
   useEffect(() => {
     if (petitionLength > 0) {
@@ -37,17 +36,18 @@ function MarsRover() {
   }, [petitionLength]);
 
   useEffect(() => {
+    const savedPage = parseInt(sessionStorage.getItem("currentPage"), 10) || 1;
+    setCurrentPage(savedPage);
+
     if (typeof window !== "undefined") {
       const storedData = JSON.parse(sessionStorage.getItem("marsRover")) || [];
       setPetitionLength(storedData.length);
-      setTotalPages(Math.ceil(storedData.length / 25));
-      setData(storedData.slice((currentPage - 1) * 25, currentPage * 25));
+      setData(storedData.slice((savedPage - 1) * 25, savedPage * 25));
     }
-  }, [currentPage]);
+  }, []);
 
   const searchData = (e) => {
     e.preventDefault();
-    setCurrentPage(1);
     if (
       validateSingleDate(
         selectedDate,
@@ -56,16 +56,18 @@ function MarsRover() {
         setDateSuccess
       )
     ) {
-      getAPI(selectedDate, setData, setIsLoading, setPetitionLength);
+      getAPI(selectedDate, setData, setIsLoading,setPetitionLength);
     }
   };
 
+  console.log(data);
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    sessionStorage.setItem("currentPage", page);
     const storedData = JSON.parse(sessionStorage.getItem("marsRover")) || [];
     setData(storedData.slice((page - 1) * 25, page * 25));
   };
-
 
   return (
     <main className="relative">
@@ -132,27 +134,31 @@ function MarsRover() {
       </form>
       <div className="max-w-xl m-auto mt-5 ">
         {petitionLength > 25 && (
-          <ResponsivePagination
-            current={currentPage}
-            total={totalPages}
-            onPageChange={handlePageChange}
-            className="flex justify-center mt-4 space-x-2 mx-3 px-3  "
-            previousLabel="<"
-            nextLabel=">"
+          <PaginationComponent
+            currentPage={currentPage}
+            totalPages={totalPages}
+            setCurrentPage={setCurrentPage}
+            SSName="marsRover"
+            setData={setData}
           />
         )}
       </div>
 
       <div
         className={
-          "container p-5 m-auto grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-4"
+          "container p-5 m-auto grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-4 "
         }
       >
         {!isLoading
           ? data?.map((element, index) => (
               <div key={index}>
-                <div className={""}>
-                  <Link href={`marsRover/${element?.id}`}>
+                <div className={"overflow-hidden max-h-32 md:max-h-52"}>
+                  <Link
+                    href={`marsRover/${element?.id}`}
+                    onClick={() => {
+                      sessionStorage.setItem("currentPage", currentPage); // Guardar la página actual
+                    }}
+                  >
                     <Image
                       src={element?.img_src}
                       alt={element?.id}
@@ -160,8 +166,8 @@ function MarsRover() {
                       height={600}
                     />
                   </Link>
-                  <span className="text-sm">{element.rover.name}</span>
                 </div>
+                <span className="text-sm">{element.rover.name}</span>
               </div>
             ))
           : arrayForSkeleton.map((_, index) => (
