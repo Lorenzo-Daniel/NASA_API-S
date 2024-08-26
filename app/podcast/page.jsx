@@ -111,9 +111,9 @@ function Podcast() {
       <div className="mt-5 w-sm ">
             <Select
               value={selectedOption}
-              onChange={handleSelectChange} // Usar la función de cambio
+              onChange={handleSelectChange}
               options={options}
-              className={`${loading ? "animate__animated animate__fadeIn animate__infinite 	 animate__slow max-w-sm m-auto" : "max-w-sm m-auto px-2"}`}
+              className={`${loading ? "  px-2 animate__animated animate__fadeIn animate__infinite 	 animate__slow max-w-sm m-auto" : "max-w-sm m-auto px-2"}`}
               isDisabled = {loading}
             />
           </div>
