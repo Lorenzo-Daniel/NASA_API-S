@@ -38,7 +38,7 @@ function DetailsMarsRover() {
 
   return (
     <div className="flex flex-col items-center h-dvh  bg-black">
-      <div className="md:max-w-xl mt-10">
+      <div className=" mt-10">
         <InnerImageZoom
           src={img_src}
           zoomSrc={img_src}

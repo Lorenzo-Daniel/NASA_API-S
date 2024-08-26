@@ -43,36 +43,33 @@ function DetailsPodcast() {
   }
   return (
     <div>
-      <div>
-        {audioLink ? (
-          <div className="bg-blue-50 h-60  flex flex-col items-center justify-center relative m-auto ">
-            <div className="border p-5" >
-              <span className="text-md ml-1 ">
-                {currentObject.data[0].title.replace(/.*Ep\d+\s+/, "")}
+      {audioLink ? (
+        <div className="bg-blue-50 h-60 flex justify-center items-center ">
+          <div className="border h-32 p-5 ">
+            <span className="text-md ml-1 ">
+              {currentObject.data[0].title.replace(/.*Ep\d+\s+/, "")}
+            </span>
+            <audio
+              src={audioLink}
+              controls
+              className="  rounded  w-60 sm:w-80 "
+            />
+            <div className="flex justify-between mt-1">
+              <span >
+                {currentObject.data[0].title.match(/Ep\d+/)}
               </span>
-              <audio
-                src={audioLink}
-                controls
-                className="  mt-0  rounded text-red"
-              />
-              <div className="flex justify-between mt-1">
-                <span className="text-md ml-1 ">
-                  {currentObject.data[0].title.match(/Ep\d+/)}
-                </span>
-                <span className="text-md ">
-                  {currentObject.data[0].date_created.slice(0, 10)}
-                </span>
-              </div>
+              <span >
+                {currentObject.data[0].date_created.slice(0, 10)}
+              </span>
             </div>
           </div>
-        ) : (
-          <CircleLoader color={"#d4d6da"} size={30} /> // Mostrar mensaje mientras se carga
-        )}
-      </div>
+        </div>
+      ) : (
+        <CircleLoader color={"#d4d6da"} size={30} /> // Mostrar mensaje mientras se carga
+      )}
       <div className="p-10 text-center max-w-7xl m-auto">
         <p>{currentObject.data[0].description}</p>
       </div>
-      algo
     </div>
   );
 }

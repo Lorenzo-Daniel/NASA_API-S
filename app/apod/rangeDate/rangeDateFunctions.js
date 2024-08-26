@@ -1,7 +1,7 @@
 const minDate = new Date("1995-06-16").getTime();
 const maxDate = new Date().getTime();
 
-export const validateDates = (start, end,setDateErrors,setDateSuccess,prevErrors,prevSuccess) => {
+export const validateDates = ({start, end,setDateErrors,setDateSuccess,prevErrors,prevSuccess}) => {
   let valid = true;
 
   if (

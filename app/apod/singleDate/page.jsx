@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { TiTick } from "react-icons/ti";
 import { CircleLoader } from "react-spinners";
 import { RiErrorWarningFill } from "react-icons/ri";
@@ -9,8 +9,9 @@ import { singleDate } from "./data";
 import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
-import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2";
+import { validateSingleDate } from "@/app/helpers/validationDates";
+import { swal } from "@/app/helpers/swal";
 
 function SingleDate() {
   const [selectedDate, setSelectedDate] = useState("");
@@ -23,53 +24,17 @@ function SingleDate() {
     selectedDate: { success: false },
   });
 
-  const minDate = new Date("1995-06-16").getTime();
-  const maxDate = new Date().getTime();
-
-  const validateDates = (selectedDate) => {
-    let valid = true;
-
-    if (
-      selectedDate === "" ||
-      new Date(selectedDate).getTime() < minDate ||
-      new Date(selectedDate).getTime() > maxDate
-    ) {
-      setDateErrors((prevErrors) => ({
-        ...prevErrors,
-        selectedDate: {
-          error: true,
-          message: `Date must be between ${new Date(
-            minDate
-          ).toLocaleDateString()} and ${new Date(
-            maxDate
-          ).toLocaleDateString()}.`,
-        },
-      }));
-      setDateSuccess((prevSuccess) => ({
-        ...prevSuccess,
-        selectedDate: { success: false },
-      }));
-      valid = false;
-      return;
-    } else {
-      setDateErrors((prevErrors) => ({
-        ...prevErrors,
-        selectedDate: { error: false, message: "" },
-      }));
-      setDateSuccess((prevSuccess) => ({
-        ...prevSuccess,
-        selectedDate: { success: true },
-      }));
-    }
-
-    return valid;
-  };
-
-  const find = () => {};
   const searchData = (e) => {
     e.preventDefault();
 
-    if (validateDates(selectedDate)) {
+    if (
+      validateSingleDate(
+        selectedDate,
+        "1995-06-16",
+        setDateErrors,
+        setDateSuccess
+      )
+    ) {
       getAPI(selectedDate);
     }
   };
@@ -81,10 +46,6 @@ function SingleDate() {
         `https://api.nasa.gov/planetary/apod?api_key=teHf0lemJMiaPjInzdphYVK6bDuGLSaFt8jO8IIj&date=${selectedDate}&concept_tags=True`
       );
       const response = await request.json();
-      setSelectedDate("");
-      setDateErrors({
-        selectedDate: { error: false, message: "" },
-      });
       setDateSuccess({
         selectedDate: { success: false },
       });
@@ -93,16 +54,10 @@ function SingleDate() {
     } catch (error) {
       setTimeout(() => {
         setIsLoading(false);
-        Swal.fire({
-          title: "Something went wrong! Try again!",
-          showConfirmButton: false,
-          showCloseButton: true,
-          customClass: {
-            popup: "h-60",
-            title: "font-extralight ",
-            closeButton: "hover:text-gray-500",
-          },
-        });
+        setDateSuccess({
+        selectedDate: { success: false },
+      });
+        swal("Something went wrong! Try again!");
       }, 3000);
       console.error(error);
     }
@@ -115,7 +70,6 @@ function SingleDate() {
       <MainComponent
         title={singleDate.mainComponent?.title}
         text1={singleDate.mainComponent.text1}
-        text2={singleDate.mainComponent.text2}
       />
       <form onSubmit={searchData}>
         <div className="flex flex-col  items-center mt-5 ">
@@ -132,8 +86,13 @@ function SingleDate() {
                   className="w-72  sm:h-16 h-10 border cursor-pointer focus:outline-none px-2 rounded text-gray-700 font-light hover:bg-gray-100"
                   value={selectedDate}
                   onChange={(e) => {
-                    validateDates(e.target.value, "");
                     setSelectedDate(e.target.value);
+                    validateSingleDate(
+                      e.target.value,
+                      "1995-06-16",
+                      setDateErrors,
+                      setDateSuccess
+                    );
                   }}
                 />
                 {dateErrors.selectedDate.error && (
@@ -180,7 +139,6 @@ function SingleDate() {
                     controls={true}
                     width={"100%"}
                     height={"100%"}
-                    // className='react-player'
                   />
                 </div>
               ) : (
@@ -209,10 +167,10 @@ function SingleDate() {
         </div>
       ) : (
         <div className="flex justify-center mt-5  ">
-          <div className="flex flex-col">
-            <span className="w-64 h-5 bg-gray-100 my-1 rounded px-1  rounded animate__animated animate__fadeIn animate__infinite 	 animate__slow"></span>
-            <span className="h-96 bg-gray-100 w-80 md:w-96 rounded   rounded animate__animated animate__fadeIn animate__infinite 	 animate__slow "></span>
-            <span className="w-32 h-5 bg-gray-100 my-1 rounded px-1  rounded animate__animated animate__fadeIn animate__infinite 	 animate__slow" />
+          <div className="flex flex-col rounded animate__animated animate__fadeIn animate__infinite 	 animate__slow">
+            <span className="w-64 h-5 bg-gray-100 my-1 rounded px-1  "/>
+            <span className="h-96 bg-gray-100 w-80 md:w-96 rounded    "/>
+            <span className="w-32 h-5 bg-gray-100 my-1 rounded px-1  " />
           </div>
         </div>
       )}

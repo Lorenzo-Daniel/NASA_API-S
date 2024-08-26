@@ -93,6 +93,7 @@ function Podcast() {
       return null;
     }
   };
+  console.log(data);
 
   const options = data.map((item) => ({
     value: item.data[0].title, // Puedes ajustar cómo se construye el valor
@@ -112,7 +113,7 @@ function Podcast() {
               value={selectedOption}
               onChange={handleSelectChange} // Usar la función de cambio
               options={options}
-              className={`${loading ? "animate__animated animate__fadeIn animate__infinite 	 animate__slow max-w-sm m-auto" : "max-w-sm m-auto"}`}
+              className={`${loading ? "animate__animated animate__fadeIn animate__infinite 	 animate__slow max-w-sm m-auto" : "max-w-sm m-auto px-2"}`}
               isDisabled = {loading}
             />
           </div>

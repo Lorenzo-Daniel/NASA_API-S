@@ -14,6 +14,10 @@
 width: 120px;
 }
 
-@media (min-width:320px) {
-  
+.page-item .page-link {
+  @apply px-2 py-1 bg-white border border-gray-300 rounded text-gray-700 hover:bg-gray-100 hover:text-black;
+}
+
+.page-item.active .page-link {
+  @apply bg-gray-500 text-white border-gray-500;
 }

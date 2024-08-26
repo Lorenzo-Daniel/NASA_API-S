@@ -11,6 +11,7 @@ import { dataMarsRover } from "./data";
 import { validateDates, getAPI } from "./functionsMarsRover";
 import ResponsivePagination from "react-responsive-pagination";
 import "react-responsive-pagination/themes/minimal.css";
+import { validateSingleDate } from "../helpers/validationDates";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
@@ -24,48 +25,56 @@ function MarsRover() {
   const [dateSuccess, setDateSuccess] = useState({
     selectedDate: { success: false },
   });
-  const [petitionLength, setPetitionLength] = useState(); // Inicializado en 0 para calcular en la primera búsqueda
+  const [petitionLength, setPetitionLength] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages,setTotalPages] = useState(0)
+  const [totalPages, setTotalPages] = useState(0);
+  const arrayForSkeleton = Array.from({ length: 20 }, (_, i) => i + 1);
 
-  const arrayForSkeleton = Array.from({ length: 20 }, (_, i) => i + 1); 
-
-console.log(petitionLength);
-
-  // Al montar el componente, cargar datos de sessionStorage si existen
+  useEffect(() => {
+    if (petitionLength > 0) {
+      setTotalPages(Math.ceil(petitionLength / 25));
+    }
+  }, [petitionLength]);
+  
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedData = JSON.parse(sessionStorage.getItem("marsRover")) || [];
-      setData(storedData);
-      setTotalPages(Math.ceil(petitionLength / 25)); // Ajuste dinámico del total de páginas
+      setPetitionLength(storedData.length);
+      setTotalPages(Math.ceil(storedData.length / 25));
+      setData(storedData.slice((currentPage - 1) * 25, currentPage * 25));
     }
-  }, [currentPage, petitionLength]);
+  }, [currentPage]);
 
-  // Función para manejar la búsqueda inicial de datos
   const searchData = (e) => {
     e.preventDefault();
-    setCurrentPage(1); // Resetear a la primera página en una nueva búsqueda
-    if (validateDates(selectedDate, setDateErrors, setDateSuccess)) {
-      getAPI(selectedDate, setData, setIsLoading, currentPage, setPetitionLength); // Petición inicial
+    setCurrentPage(1);
+    if (
+      validateSingleDate(
+        selectedDate,
+        "2013-01-01",
+        setDateErrors,
+        setDateSuccess
+      )
+    ) {
+      getAPI(selectedDate, setData, setIsLoading, setPetitionLength);
     }
   };
 
-  // Función para manejar el cambio de página
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    getAPI(selectedDate, setData, setIsLoading, page, setPetitionLength); // Petición para la página seleccionada
+    const storedData = JSON.parse(sessionStorage.getItem("marsRover")) || [];
+    setData(storedData.slice((page - 1) * 25, page * 25));
   };
+
+  console.log(petitionLength);
+  console.log(data);
+  console.log(JSON.parse(sessionStorage.getItem("marsRover")));
 
   return (
     <main className="relative">
       <MainComponent
         title={dataMarsRover.mainComponent?.title}
         text1={dataMarsRover.mainComponent.text1}
-      />
-      <ResponsivePagination
-        current={currentPage}
-        total={totalPages}
-        onPageChange={handlePageChange} // Cambiar de página al clicar
       />
       <form onSubmit={searchData}>
         <div className="flex flex-col items-center mt-5">
@@ -82,8 +91,9 @@ console.log(petitionLength);
                   className="w-72 sm:h-16 h-10 border cursor-pointer focus:outline-none px-2 rounded text-gray-700 font-light hover:bg-gray-100"
                   value={selectedDate}
                   onChange={(e) => {
-                    validateDates(
+                    validateSingleDate(
                       e.target.value,
+                      "2013-01-01",
                       setDateErrors,
                       setDateSuccess
                     );
@@ -123,24 +133,28 @@ console.log(petitionLength);
           </div>
         </div>
       </form>
+      <div className="max-w-xl m-auto mt-5 ">
+        {petitionLength > 25 && (
+          <ResponsivePagination
+            current={currentPage}
+            total={totalPages}
+            onPageChange={handlePageChange}
+            className="flex justify-center mt-4 space-x-2 mx-3 px-3  "
+            previousLabel="<"
+            nextLabel=">"
+          />
+        )}
+      </div>
 
       <div
-        className={`${
-          data.length > 50
-            ? "container p-5 m-auto grid grid-cols-5 md:grid-cols-8 xl:grid-cols-10 lg:grid-cols-10 gap-4 mt-10"
-            : "container p-5 m-auto grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 lg:grid-cols-2 gap-4 mt-10"
-        }`}
+        className={
+          "container p-5 m-auto grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-4"
+        }
       >
         {!isLoading
           ? data?.map((element, index) => (
               <div key={index}>
-                <div
-                  className={`${
-                    data.length > 50
-                      ? ""
-                      : "lg:h-60 flex justify-center items-center overflow-hidden"
-                  }`}
-                >
+                <div className={""}>
                   <Link href={`marsRover/${element?.id}`}>
                     <Image
                       src={element?.img_src}
@@ -155,7 +169,7 @@ console.log(petitionLength);
             ))
           : arrayForSkeleton.map((_, index) => (
               <div key={index}>
-                <div className="lg:h-40 flex justify-center overflow-hidden flex-fill bg-gray-100 animate__animated animate__fadeIn animate__infinite animate__slow"></div>
+                <div className="h-40  flex justify-center overflow-hidden flex-fill bg-gray-100 animate__animated animate__fadeIn animate__infinite animate__slow"></div>
                 <div className="flex justify-between mt-1"></div>
               </div>
             ))}
@@ -165,4 +179,3 @@ console.log(petitionLength);
 }
 
 export default MarsRover;
-

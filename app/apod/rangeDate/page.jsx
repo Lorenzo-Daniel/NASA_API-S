@@ -10,6 +10,7 @@ import MainComponent from "../../components/MainComponent";
 import { dataRangeDate } from "./data";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2";
+import { swal } from "@/app/helpers/swal";
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 function RangeDate() {
@@ -165,16 +166,7 @@ function RangeDate() {
     } catch (error) {
       setTimeout(() => {
         setIsLoading(false);
-        Swal.fire({
-          title: "Something went wrong! Try again!",
-          showConfirmButton: false,
-          showCloseButton: true,
-          customClass: {
-            popup: "h-60",
-            title: "font-extralight ",
-            closeButton: "hover:text-gray-500",
-          },
-        });
+   swal("Something went wrong! Try again!")
       }, 3000);
       console.error(error);
     }
