@@ -35,7 +35,7 @@ function MarsRover() {
       setTotalPages(Math.ceil(petitionLength / 25));
     }
   }, [petitionLength]);
-  
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedData = JSON.parse(sessionStorage.getItem("marsRover")) || [];
@@ -66,9 +66,6 @@ function MarsRover() {
     setData(storedData.slice((page - 1) * 25, page * 25));
   };
 
-  console.log(petitionLength);
-  console.log(data);
-  console.log(JSON.parse(sessionStorage.getItem("marsRover")));
 
   return (
     <main className="relative">
