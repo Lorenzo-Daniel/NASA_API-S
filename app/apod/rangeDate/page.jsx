@@ -284,16 +284,17 @@ function RangeDate() {
           ? data?.map((item, index) => (
               <div
                 key={index}
-                className="max-w-[300px] max-h-[300px] shadow-md shadow-slate-500 overflow-hidden rounded-md relative">
-                <Link href={`rangeDate/${item?.title}`}>
-                  {item.media_type === "video" ? (
-                    <ReactPlayer
-                      url={item.url}
-                      controls={true}
-                      width={300}
-                      height={300}
-                    />
-                  ) : (
+                className="max-w-[300px] max-h-[300px] shadow-md shadow-slate-500 overflow-hidden rounded-md relative"
+              >
+                {item.media_type === "video" ? (
+                  <ReactPlayer
+                    url={item.url}
+                    controls={true}
+                    width={300}
+                    height={300}
+                  />
+                ) : (
+                  <Link href={`rangeDate/${item?.title}`}>
                     <Image
                       src={item.url}
                       alt={item.title}
@@ -301,12 +302,14 @@ function RangeDate() {
                       height={300}
                       className="object-cover h-full"
                     />
-                  )}
-                <p className="p-3 absolute left-0 bottom-0 text-white text-sm ">{item.title}</p>
-                </Link>
+                    <p className="p-3 absolute left-0 bottom-0 text-white text-sm ">
+                      {item.title}
+                    </p>
+                  </Link>
+                )}
               </div>
             ))
-          : array.map((item, index) => (
+          : array.map((_, index) => (
               <div
                 key={index}
                 className="w-[300px] h-[300px] rounded-md bg-gray-100 mt-10 animate__animated animate__fadeIn animate__infinite animate__slow"
