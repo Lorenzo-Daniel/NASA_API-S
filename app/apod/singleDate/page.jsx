@@ -55,8 +55,8 @@ function SingleDate() {
       setTimeout(() => {
         setIsLoading(false);
         setDateSuccess({
-        selectedDate: { success: false },
-      });
+          selectedDate: { success: false },
+        });
         swal("Something went wrong! Try again!");
       }, 3000);
       console.error(error);
@@ -142,34 +142,37 @@ function SingleDate() {
                   />
                 </div>
               ) : (
-                <div className="flex flex-col md:max-w-xl ">
-                  <div className="flex justify-start mb-1 text-gray-500 ">
-                    <h3 className="md:text-2xl ">{title}</h3>
-                  </div>
-                  <InnerImageZoom
-                    src={url}
-                    zoomSrc={url}
-                    zoomScale={1}
-                    zoomType="click"
-                    moveType="drag"
-                    hideCloseButton={true}
-                  />
-                  <div className="flex justify-start text-gray-500 ">
-                    <span> {date}</span>
+                <div>
+                  <h1 className="text-3xl  font-extralight text-center px-3">
+                    {title}
+                  </h1>
+
+                  <div className="flex flex-col lg:flex-col-reverse items-center justify-center  p-5">
+                    <div className=" md:max-w-xl">
+                      <InnerImageZoom
+                        src={url}
+                        zoomSrc={url}
+                        zoomScale={1}
+                        zoomType="click"
+                        moveType="drag"
+                        hideCloseButton={true}
+                      />
+                      <span>{date}</span>
+                    </div>
+                    <p className="text-center 5  max-w-screen-md my-5">
+                      {explanation}
+                    </p>
                   </div>
                 </div>
               )}
             </div>
-            <p className="text-center mt-5 md:m-10 max-w-screen-md ">
-              {explanation}
-            </p>
           </div>
         </div>
       ) : (
         <div className="flex justify-center mt-5  ">
           <div className="flex flex-col rounded animate__animated animate__fadeIn animate__infinite 	 animate__slow">
-            <span className="w-64 h-5 bg-gray-100 my-1 rounded px-1  "/>
-            <span className="h-96 bg-gray-100 w-80 md:w-96 rounded    "/>
+            <span className="w-64 h-5 bg-gray-100 my-1 rounded px-1  " />
+            <span className="h-96 bg-gray-100 w-80 md:w-96 rounded    " />
             <span className="w-32 h-5 bg-gray-100 my-1 rounded px-1  " />
           </div>
         </div>

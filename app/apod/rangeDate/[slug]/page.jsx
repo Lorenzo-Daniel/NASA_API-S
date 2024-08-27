@@ -29,7 +29,7 @@ function Details() {
       </div>
     );
   }
-  const { url, explanation, title } = currentObject;
+  const { url, explanation, title,date } = currentObject;
 
   return (
     <div>
@@ -37,8 +37,8 @@ function Details() {
         {title}
       </h1>
 
-      <div className="flex flex-col-reverse  items-center justify-center mt-5 p-5">
-        <p className="text-center mt-5 md:m-10 max-w-screen-md">
+      <div className="flex flex-col  items-center justify-center  p-5">
+        <p className="text-center mb-5  md:m-10 max-w-screen-md">
           {explanation}
         </p>
         <div className=" md:max-w-xl" >
@@ -50,6 +50,7 @@ function Details() {
             moveType="drag"
             hideCloseButton={true}
           />
+          <span>{date}</span>
         </div>
       </div>
     </div>

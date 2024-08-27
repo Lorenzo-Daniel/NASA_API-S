@@ -8,7 +8,6 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import MainComponent from "../../components/MainComponent";
 import { dataRangeDate } from "./data";
-import ResponsivePagination from "react-responsive-pagination";
 import "react-responsive-pagination/themes/minimal.css";
 import "sweetalert2";
 import { swal } from "@/app/helpers/swal";
@@ -33,6 +32,16 @@ function RangeDate() {
     if (typeof window !== "undefined") {
       setData(JSON.parse(sessionStorage.getItem("NASA-pictures")) || []);
     }
+    // Restaurar la posición del scroll al cargar la página
+    const previousScrollY = sessionStorage.getItem("previousScrollY");
+    if (previousScrollY) {
+      window.scrollTo(0, parseInt(previousScrollY));
+    }
+
+    // Limpieza al desmontar
+    return () => {
+      sessionStorage.removeItem("previousScrollY");
+    };
   }, []);
   const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
   const minDate = new Date("1995-06-16").getTime();
@@ -269,42 +278,91 @@ function RangeDate() {
             )}
           </div>
         </div>
-        <div className="max-w-xl m-auto mt-5 ">
-       
-        </div>
       </form>
-      <div className="container p-5 m-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
+      <div className="flex flex-wrap justify-center gap-10 pb-10 mt-10">
         {!isLoading
-          ? data?.map((img, index) => {
+          ? data?.map((item, index) => (
+              <div
+                key={index}
+                className="max-w-[300px] max-h-[300px] shadow-md shadow-slate-500 overflow-hidden rounded-md"
+              >
+                <Link href={`rangeDate/${item?.title}`}>
+                  {item.media_type === "video" ? (
+                    <ReactPlayer
+                      url={item.url}
+                      controls={true}
+                      width={300}
+                      height={300}
+                    />
+                  ) : (
+                    <Image
+                      src={item.url}
+                      alt="image"
+                      width={300}
+                      height={300}
+                      className="object-cover h-full"
+                    />
+                  )}
+                </Link>
+                <p className="text-white p-3">{item.title}</p>
+              </div>
+            ))
+          : array.map((item, index) => (
+              <div
+                key={index}
+                className="w-[300px] h-[300px] shadow-md shadow-slate-500 rounded-md bg-gray-100 mt-10"
+              >
+                <p className="text-white p-3 bg-gray-100 h-5 w-32 "></p>
+              </div>
+            ))}
+      </div>
+
+      {/* <div className="flex flex-wrap justify-center gap-10 pb-10">
+        {!isLoading
+          ? data?.map((item, index) => {
               return (
                 <div key={index}>
-                  <div className="h-60 sm:h-40 lg:h-50 xl:h-52 flex justify-center items-center overflow-hidden flex-fill border rounded p-2  ">
-                    {img?.media_type === "video" ? (
+                  <div className="max-w-[300px] max-h-[300px] shadow-md shadow-slate-500 overflow-hidden rounded-md">
+                  <Link href={`rangeDate/${item?.title}`} >
+              {item.media_type === "video" ? (
+                <ReactPlayer url={item.url} controls={true} width={300} height={300}/>
+              ) : (
+                <Image
+                  src={item.url}
+                  alt="image"
+                  width={300}
+                  height={300}
+                  className="object-cover h-full"
+                />
+              )}
+            </Link>
+                    {item?.media_type === "video" ? (
                       <ReactPlayer
-                        url={img.url}
+                        url={item.url}
                         controls={true}
-                        width="100%"
-                        height="100%"
+                        width={300}
+                        height={300}
                       />
                     ) : (
-                      <Link href={`rangeDate/${img?.title}`}>
+                      <Link href={`rangeDate/${item?.title}`}>
                         <Image
-                          src={img.url}
-                          alt={img.title}
-                          width={600}
-                          height={0}
+                          src={item.url}
+                          alt={item.title}
+                          width={300}
+                          height={300}
+                          className="object-cover h-full"
                         />
                       </Link>
                     )}
                   </div>
                   <div className="flex justify-between p-2">
-                    <span> {img.date}</span>
-                    <span className="">{img.media_type}</span>
+                    <span> {item.date}</span>
+                    <span className="">{item.media_type}</span>
                   </div>
                 </div>
               );
             })
-          : array?.map((img, index) => {
+          : array?.map((_, index) => {
               return (
                 <div key={index}>
                   <div className="h-60 sm:h-40 lg:h-50 xl:h-52 flex justify-center overflow-hidden flex-fill bg-gray-100 animate__animated animate__fadeIn animate__infinite 	 animate__slow">
@@ -323,7 +381,7 @@ function RangeDate() {
                 </div>
               );
             })}
-      </div>
+      </div> */}
     </main>
   );
 }

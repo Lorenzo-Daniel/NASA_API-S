@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import Image  from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import MainComponent from "../components/MainComponent";
 import dynamic from "next/dynamic";
@@ -11,7 +11,7 @@ import { CircleLoader } from "react-spinners";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { dataEpic } from "./data";
 import { Carousel } from "react-responsive-carousel";
-import { getAPI,validateDates } from "./[slug]/functionsEpic";
+import { getAPI, validateDates } from "./[slug]/functionsEpic";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 function Epic() {
@@ -30,23 +30,27 @@ function Epic() {
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
   ];
 
- 
   useEffect(() => {
     if (typeof window !== "undefined") {
-    const storedData = JSON.parse(sessionStorage.getItem("NASA-EPIC")) || [];
-    setData(storedData);
-  }
+      const storedData = JSON.parse(sessionStorage.getItem("NASA-EPIC")) || [];
+      setData(storedData);
+    }
   }, []);
 
   const searchData = (e) => {
     e.preventDefault();
 
-    if (validateDates(selectedDate,setDateErrors,setDateSuccess)) {
-      getAPI(selectedDate,setSelectedDate,setDateErrors,setDateSuccess,setData,setIsLoading);
+    if (validateDates(selectedDate, setDateErrors, setDateSuccess)) {
+      getAPI(
+        selectedDate,
+        setSelectedDate,
+        setDateErrors,
+        setDateSuccess,
+        setData,
+        setIsLoading
+      );
     }
   };
-
-
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -85,7 +89,11 @@ function Epic() {
                   className="w-72  sm:h-16 h-10 border cursor-pointer focus:outline-none px-2 rounded text-gray-700 font-light hover:bg-gray-100"
                   value={selectedDate}
                   onChange={(e) => {
-                    validateDates(e.target.value,setDateErrors,setDateSuccess);
+                    validateDates(
+                      e.target.value,
+                      setDateErrors,
+                      setDateSuccess
+                    );
                     setSelectedDate(e.target.value);
                   }}
                 />
@@ -129,7 +137,7 @@ function Epic() {
         className="bg-black m-5 "
         showThumbs={false}
       >
-        {!isLoading  
+        {!isLoading
           ? data?.map((obj, index) => {
               const fullDate = new Date(data[0].date);
               const year = fullDate.getFullYear().toString();
