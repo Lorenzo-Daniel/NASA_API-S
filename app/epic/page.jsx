@@ -33,8 +33,9 @@ function Epic() {
  
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setData(JSON.parse(sessionStorage.getItem("NASA-EPIC")) || []);
-    }
+    const storedData = JSON.parse(sessionStorage.getItem("NASA-EPIC")) || [];
+    setData(storedData);
+  }
   }, []);
 
   const searchData = (e) => {
@@ -128,7 +129,7 @@ function Epic() {
         className="bg-black m-5 "
         showThumbs={false}
       >
-        {!isLoading
+        {!isLoading  && data.length > 0
           ? data?.map((obj, index) => {
               const fullDate = new Date(data[0].date);
               const year = fullDate.getFullYear().toString();
@@ -137,7 +138,7 @@ function Epic() {
               const formatedDate = `${year}/${month}/${date}`;
               return (
                 <div
-                  key={index}
+                  key={obj.identifier}
                   className="flex justify-center items-center relative "
                 >
                   <Link href={`epic/${obj?.identifier}`}>
