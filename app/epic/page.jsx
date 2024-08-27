@@ -129,7 +129,7 @@ function Epic() {
         className="bg-black m-5 "
         showThumbs={false}
       >
-        {!isLoading  && data.length > 0
+        {!isLoading  
           ? data?.map((obj, index) => {
               const fullDate = new Date(data[0].date);
               const year = fullDate.getFullYear().toString();
