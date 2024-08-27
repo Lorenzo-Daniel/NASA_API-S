@@ -170,7 +170,7 @@ function SingleDate() {
         </div>
       ) : (
         <div className="flex justify-center mt-5  ">
-          <div className="flex flex-col rounded animate__animated animate__fadeIn animate__infinite 	 animate__slow">
+          <div className="flex flex-col rounded animate__animated animate__fadeIn animate__infinite animate__slow">
             <span className="w-64 h-5 bg-gray-100 my-1 rounded px-1  " />
             <span className="h-96 bg-gray-100 w-80 md:w-96 rounded    " />
             <span className="w-32 h-5 bg-gray-100 my-1 rounded px-1  " />

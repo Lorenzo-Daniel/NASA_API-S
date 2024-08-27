@@ -45,7 +45,9 @@ function DetailsMarsRover() {
             zoomType="click"
             moveType="drag"
             hideCloseButton={true}
-            width={"100%"}
+            width={800}
+            height={600}
+             className="object-cover w-full h-full"
           />
         </div>
         <div className="text-white mt-5 ">

@@ -26,7 +26,7 @@ function MarsRover() {
   const [dateSuccess, setDateSuccess] = useState({
     selectedDate: { success: false },
   });
-  
+
   const arrayForSkeleton = Array.from({ length: 20 }, (_, i) => i);
 
   useEffect(() => {
@@ -56,7 +56,7 @@ function MarsRover() {
         setDateSuccess
       )
     ) {
-      getAPI(selectedDate, setData, setIsLoading,setPetitionLength);
+      getAPI(selectedDate, setData, setIsLoading, setPetitionLength);
     }
   };
 
@@ -145,38 +145,39 @@ function MarsRover() {
       </div>
 
       <div
-        className={
-          "container p-5 m-auto grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-4 "
-        }
-      >
-        {!isLoading
-          ? data?.map((element, index) => (
-              <div key={index}>
-                <div className={"overflow-hidden max-h-32 md:max-h-52"}>
-                  <Link
-                    href={`marsRover/${element?.id}`}
-                    onClick={() => {
-                      sessionStorage.setItem("currentPage", currentPage); // Guardar la página actual
-                    }}
-                  >
-                    <Image
-                      src={element?.img_src}
-                      alt={element?.id}
-                      width={600}
-                      height={600}
-                    />
-                  </Link>
-                </div>
-                <span className="text-sm">{element.rover.name}</span>
-              </div>
-            ))
-          : arrayForSkeleton.map((_, index) => (
-              <div key={index}>
-                <div className="h-40  flex justify-center overflow-hidden flex-fill bg-gray-100 animate__animated animate__fadeIn animate__infinite animate__slow"></div>
-                <div className="flex justify-between mt-1"></div>
-              </div>
-            ))}
-      </div>
+  className="container p-5 m-auto grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-x-4 gap-y-4"
+>
+  {!isLoading
+    ? data?.map((element, index) => (
+        <div key={index} className="w-full">
+          <div className="shadow-md shadow-slate-500 overflow-hidden rounded-md relative w-full h-full">
+            <Link
+              href={`marsRover/${element?.id}`}
+              onClick={() => {
+                sessionStorage.setItem("currentPage", currentPage); // Guardar la página actual
+              }}
+            >
+              <Image
+                src={element?.img_src}
+                alt={element?.id}
+                width={300}
+                height={300}
+                className="object-cover w-full h-full"
+              />
+              <span className="p-3 absolute left-0 bottom-0 text-white text-sm">
+                {element.rover.name}
+              </span>
+            </Link>
+          </div>
+        </div>
+      ))
+    : arrayForSkeleton.map((_, index) => (
+        <div key={index} className="w-full">
+          <div className="h-40 flex justify-center overflow-hidden flex-fill bg-gray-100 animate__animated animate__fadeIn animate__infinite animate__slow w-full"></div>
+          <div className="flex justify-between mt-1"></div>
+        </div>
+      ))}
+</div>
     </main>
   );
 }

@@ -284,8 +284,7 @@ function RangeDate() {
           ? data?.map((item, index) => (
               <div
                 key={index}
-                className="max-w-[300px] max-h-[300px] shadow-md shadow-slate-500 overflow-hidden rounded-md"
-              >
+                className="max-w-[300px] max-h-[300px] shadow-md shadow-slate-500 overflow-hidden rounded-md relative">
                 <Link href={`rangeDate/${item?.title}`}>
                   {item.media_type === "video" ? (
                     <ReactPlayer
@@ -297,91 +296,25 @@ function RangeDate() {
                   ) : (
                     <Image
                       src={item.url}
-                      alt="image"
+                      alt={item.title}
                       width={300}
                       height={300}
                       className="object-cover h-full"
                     />
                   )}
+                <p className="p-3 absolute left-0 bottom-0 text-white text-sm ">{item.title}</p>
                 </Link>
-                <p className="text-white p-3">{item.title}</p>
               </div>
             ))
           : array.map((item, index) => (
               <div
                 key={index}
-                className="w-[300px] h-[300px] shadow-md shadow-slate-500 rounded-md bg-gray-100 mt-10"
+                className="w-[300px] h-[300px] rounded-md bg-gray-100 mt-10 animate__animated animate__fadeIn animate__infinite animate__slow"
               >
                 <p className="text-white p-3 bg-gray-100 h-5 w-32 "></p>
               </div>
             ))}
       </div>
-
-      {/* <div className="flex flex-wrap justify-center gap-10 pb-10">
-        {!isLoading
-          ? data?.map((item, index) => {
-              return (
-                <div key={index}>
-                  <div className="max-w-[300px] max-h-[300px] shadow-md shadow-slate-500 overflow-hidden rounded-md">
-                  <Link href={`rangeDate/${item?.title}`} >
-              {item.media_type === "video" ? (
-                <ReactPlayer url={item.url} controls={true} width={300} height={300}/>
-              ) : (
-                <Image
-                  src={item.url}
-                  alt="image"
-                  width={300}
-                  height={300}
-                  className="object-cover h-full"
-                />
-              )}
-            </Link>
-                    {item?.media_type === "video" ? (
-                      <ReactPlayer
-                        url={item.url}
-                        controls={true}
-                        width={300}
-                        height={300}
-                      />
-                    ) : (
-                      <Link href={`rangeDate/${item?.title}`}>
-                        <Image
-                          src={item.url}
-                          alt={item.title}
-                          width={300}
-                          height={300}
-                          className="object-cover h-full"
-                        />
-                      </Link>
-                    )}
-                  </div>
-                  <div className="flex justify-between p-2">
-                    <span> {item.date}</span>
-                    <span className="">{item.media_type}</span>
-                  </div>
-                </div>
-              );
-            })
-          : array?.map((_, index) => {
-              return (
-                <div key={index}>
-                  <div className="h-60 sm:h-40 lg:h-50 xl:h-52 flex justify-center overflow-hidden flex-fill bg-gray-100 animate__animated animate__fadeIn animate__infinite 	 animate__slow">
-                    <Image
-                      src={""}
-                      alt={""}
-                      width={600}
-                      height={0}
-                      className="border rounded "
-                    />
-                  </div>
-                  <div className="flex justify-between mt-1 ">
-                    <span className="bg-gray-100 w-24 h-4 border rounded animate__animated animate__fadeIn animate__infinite 	 animate__slow"></span>
-                    <span className="bg-gray-100 w-16 h-4 border rounded animate__animated animate__fadeIn animate__infinite 	 animate__slow"></span>
-                  </div>
-                </div>
-              );
-            })}
-      </div> */}
     </main>
   );
 }
