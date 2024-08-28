@@ -27,6 +27,7 @@ function RangeDate() {
     start: { success: false },
     end: { success: false },
   });
+console.log(data);
 
   useEffect(() => {
     if (typeof window !== "undefined") {

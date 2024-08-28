@@ -6,6 +6,7 @@ export const metadata = {
   title: "NASA APIS ",
   description: "APOD",
 };
+
 function apod() {
   const categories = [
     { category: "Single Date", url: "apod/singleDate" },

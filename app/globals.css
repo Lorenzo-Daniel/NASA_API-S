@@ -8,8 +8,27 @@
   box-sizing: border-box;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
 
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
+#__next {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+main {
+  flex: 1; /* Esto hace que el main tome todo el espacio disponible */
+}
 .react-player {
 width: 120px;
 }
