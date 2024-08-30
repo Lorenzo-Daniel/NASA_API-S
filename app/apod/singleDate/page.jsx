@@ -52,7 +52,7 @@ function SingleDate() {
   const { url, explanation, title, media_type, date } = data;
 
   return (
-    <main className="">
+    <main className="mb-20">
       <MainComponent
         title={singleDate.mainComponent?.title}
         text1={singleDate.mainComponent.text1}

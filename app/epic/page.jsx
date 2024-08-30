@@ -92,7 +92,7 @@ function Epic() {
   }, []);
 
   return (
-    <main className="">
+    <main className="mb-20">
       <MainComponent
         title={dataEpic.mainComponent?.title}
         text1={dataEpic.mainComponent.text1}
@@ -122,7 +122,7 @@ function Epic() {
         rightArrow={"next"}
         showArrows={true}
         showIndicators={carouselIndicators}
-        className="bg-black m-5 "
+        className="bg-black m-5 mt-10 "
         showThumbs={false}
       >
         {!isLoading

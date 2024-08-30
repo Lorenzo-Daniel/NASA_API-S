@@ -101,7 +101,7 @@ function RangeDate() {
   };
 
   return (
-    <main className="relative">
+    <main className=" mb-20">
       <MainComponent
         title={dataRangeDate.mainComponent?.title}
         text1={dataRangeDate.mainComponent.text1}

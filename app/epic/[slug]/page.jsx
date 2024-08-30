@@ -83,8 +83,8 @@ function DetailsEpic() {
   const formattedDate = transformFormatDate(date);
 
   return (
-    <div className="flex flex-col 2xl:flex-row 2xl:flex-fill 2xl:items-center  2xl:justify-evenly bg-black " >
-      <div className="2xl:max-w-4xl">
+    <main className="flex flex-col 2xl:flex-row 2xl:flex-fill 2xl:items-center  2xl:justify-evenly  bg-black pb-20" >
+      <div className="2xl:max-w-4xl ">
         <InnerImageZoom
           src={`https://epic.gsfc.nasa.gov/archive/natural/${formattedDate}/png/${image}.png`}
           zoomSrc={`https://epic.gsfc.nasa.gov/archive/natural/${formattedDate}/png/${image}.png`}
@@ -107,7 +107,7 @@ function DetailsEpic() {
           })}
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 

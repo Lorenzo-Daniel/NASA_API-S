@@ -48,7 +48,7 @@ function DateRangePickerComponent({
           className="h-14 p-2 border border-gray-300 rounded-md focus:outline-none border border-slate-400 w-80 text-center align cursor-pointer hover:bg-gray-200	bg-gray-100"
           calendarClassName="w-80 bg-red-500 border border-gray-200 shadow-lg rounded-md p-3 datepicker"
           dayClassName={(date) =>
-            "w-12 h-10 flex items-center justify-center text-sm"
+            "w-12 h-7 lg:h-10 flex items-center justify-center text-sm"
           }
     
         />
