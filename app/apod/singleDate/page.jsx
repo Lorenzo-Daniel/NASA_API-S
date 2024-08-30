@@ -1,56 +1,33 @@
 "use client";
 import React, { useState } from "react";
-import { TiTick } from "react-icons/ti";
-import { CircleLoader } from "react-spinners";
-import { RiErrorWarningFill } from "react-icons/ri";
 import dynamic from "next/dynamic";
 import MainComponent from "../../components/MainComponent";
-import { singleDate } from "./data";
 import InnerImageZoom from "react-inner-image-zoom";
-import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
-const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
+import Button from "@/app/components/Button";
 import "sweetalert2";
-import { validateSingleDate } from "@/app/helpers/validationDates";
+import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
+import { CircleLoader } from "react-spinners";
+import { singleDate } from "./data";
 import { swal } from "@/app/helpers/swal";
-
-const obj = {
-  concepts: "concept_tags functionality turned off in current service",
-  copyright: "Petr Horálek",
-  date: "2024-08-01",
-  explanation:
-    "A visitor to the inner solar system every 70 years or so, Comet 13P/Olbers reached its most recent perihelion, or closest approach to the Sun, on June 30. Now on a return voyage to the distant Oort Cloud, the Halley-type comet is recorded here sweeping through northern summer night skies over historic Kunetice Castle, Czech Republic. The composite of tracked exposures for comet and sky, showing the comet's broad dust tail, brighter coma, and long ion tail buffeted by storms and winds from the Sun, and fixed exposures for foreground landscape was recorded on July 28. The comet is about 16 light-minutes beyond the castle and seen against faint background stars below the northern constellation Ursa Major. The hilltop castle dates to the 15th century, while Heinrich Olbers discovered the comet in 1815. Captured here low in northwestern skies just after sunset Comet Olbers, for now, offers skywatchers on planet Earth rewarding telescopic and binocular views. Comet 13P/Olbers' next perihelion passage will be in 2094.",
-  hdurl:
-    "https://apod.nasa.gov/apod/image/2408/2024_07_28_Olbers_Kunka_Kunetice_1500px.png",
-  media_type: "image",
-  service_version: "v1",
-  title: "Comet Olbers over Kunetice Castle",
-  url: "https://apod.nasa.gov/apod/image/2408/2024_07_28_Olbers_Kunka_Kunetice_1024px.jpg",
-};
+const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
+import { formatDateSingleDateComponent } from "@/app/helpers/formatDate";
+import DataPickerComponent from "@/app/components/DatePickerComponent.jsx";
 
 function SingleDate() {
   const [selectedDate, setSelectedDate] = useState("");
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [dateErrors, setDateErrors] = useState({
-    selectedDate: { error: false, message: "" },
-  });
-  const [dateSuccess, setDateSuccess] = useState({
-    selectedDate: { success: false },
-  });
-  console.log(data);
+  const [error, setError] = useState({ error: false, messagge: "" });
 
   const searchData = (e) => {
     e.preventDefault();
 
-    if (
-      validateSingleDate(
-        selectedDate,
-        "1995-06-16",
-        setDateErrors,
-        setDateSuccess
-      )
-    ) {
-      getAPI(selectedDate);
+    if (selectedDate) {
+      setError({ error: true, messagge: "" });
+      const formated = formatDateSingleDateComponent(selectedDate);
+      getAPI(formated);
+    } else {
+      setError({ error: true, message: "You must enter a date" });
     }
   };
 
@@ -61,18 +38,12 @@ function SingleDate() {
         `https://api.nasa.gov/planetary/apod?api_key=teHf0lemJMiaPjInzdphYVK6bDuGLSaFt8jO8IIj&date=${selectedDate}&concept_tags=True`
       );
       const response = await request.json();
-      setDateSuccess({
-        selectedDate: { success: false },
-      });
       setIsLoading(false);
       setData(response);
     } catch (error) {
       setTimeout(() => {
         setIsLoading(false);
-        setDateSuccess({
-          selectedDate: { success: false },
-        });
-        swal("Something went wrong! Try again!");
+        swal("Something went wrong! Check your connection and try again!");
       }, 3000);
       console.error(error);
     }
@@ -86,58 +57,22 @@ function SingleDate() {
         title={singleDate.mainComponent?.title}
         text1={singleDate.mainComponent.text1}
       />
+
       <form onSubmit={searchData}>
-        <div className="flex flex-col  items-center mt-5 ">
-          <div className="h-24 flex flex-col">
-            <div className="flex justify-start items-center">
-              <span className="text-md text-black-700 font-light ">
-                Enter Date
-              </span>
-            </div>
-            <div className="flex-column items-center">
-              <div className="flex items-center ">
-                <input
-                  type="date"
-                  className="w-72  sm:h-16 h-10 border cursor-pointer focus:outline-none px-2 rounded text-gray-700 font-light hover:bg-gray-100"
-                  value={selectedDate}
-                  onChange={(e) => {
-                    setSelectedDate(e.target.value);
-                    validateSingleDate(
-                      e.target.value,
-                      "1995-06-16",
-                      setDateErrors,
-                      setDateSuccess
-                    );
-                  }}
-                />
-                {dateErrors.selectedDate.error && (
-                  <RiErrorWarningFill className="text-red-300 text-2xl ml-1 font-light " />
-                )}
-                {dateSuccess.selectedDate.success && (
-                  <TiTick className="text-green-700 text-2xl ml-1 font-light" />
-                )}
-              </div>
-            </div>
-            {dateErrors.selectedDate.error && (
-              <div className="text-red-500 text-start text-xs mt-1">
-                {dateErrors.selectedDate.message}
-              </div>
-            )}
-          </div>
-        </div>
+        <DataPickerComponent
+          error={error}
+          setError={setError}
+          setSelectedDate={setSelectedDate}
+          selectedDate={selectedDate}
+        />
 
         <div className="flex justify-center ">
           <div>
             {!isLoading ? (
-              <button
-                type="submit"
-                className=" h-14 w-24 px-3 py-2 bg-gray-100 border rounded text-gray-500 hover:opacity-200  hover:text-black hover:bg-gray-200 sm:mt-5 "
-              >
-                Search
-              </button>
+              <Button type={"submit"} action={"Search"} />
             ) : (
               <div className="flex justify-center mt-5">
-                <CircleLoader color={"#d4d6da"} size={50} />
+                <CircleLoader color={"#a2a4a7"} size={50} />
               </div>
             )}
           </div>
@@ -184,8 +119,8 @@ function SingleDate() {
           </div>
         </div>
       ) : (
-        <div className="flex justify-center mt-5  ">
-          <div className="flex flex-col rounded animate__animated animate__fadeIn animate__infinite animate__slow">
+        <div className="flex justify-center m-10  ">
+          <div className="flex flex-col rounded motion-safe:animate-pulse">
             <span className="w-64 h-5 bg-gray-100 my-1 rounded px-1  " />
             <span className="h-96 bg-gray-100 w-80 md:w-96 rounded    " />
             <span className="w-32 h-5 bg-gray-100 my-1 rounded px-1  " />

@@ -50,7 +50,7 @@ function Home() {
   };
 
   return (
-    <div className="container m-auto max-w-4xl">
+    <div className="container m-auto max-w-4xl mb-10">
       <MainComponent
         title={data.mainComponent?.title}
         text1={data.mainComponent.text1}

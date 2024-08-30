@@ -6,29 +6,36 @@ import Image from "next/image";
 import Link from "next/link";
 import MainComponent from "../components/MainComponent";
 import dynamic from "next/dynamic";
-import { TiTick } from "react-icons/ti";
 import { CircleLoader } from "react-spinners";
-import { RiErrorWarningFill } from "react-icons/ri";
 import { dataEpic } from "./data";
 import { Carousel } from "react-responsive-carousel";
-import { getAPI, validateDates } from "./[slug]/functionsEpic";
-
+import DatePickerComponent from "../components/DatePickerComponent";
+import { formatDateSingleDateComponent } from "../helpers/formatDate";
+import Button from "../components/Button";
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 function Epic() {
   const [selectedDate, setSelectedDate] = useState("");
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [carouselIndicators, setCarouselIndicators] = useState(false);
-  const [dateErrors, setDateErrors] = useState({
-    selectedDate: { error: false, message: "" },
-  });
-  const [dateSuccess, setDateSuccess] = useState({
-    selectedDate: { success: false },
-  });
+  const [error, setError] = useState({ error: false, message: "" });
 
   const arrayForSkeleton = [
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
   ];
+
+  function raizCuadradaSumaCuadrados(a, b, c) {
+    return Math.sqrt(a * a + b * b + c * c);
+  }
+
+  const response = raizCuadradaSumaCuadrados(
+    -106651406.22832,
+    99004406.571716,
+    42917919.110164
+  );
+
+  let numero = Number(response.toFixed());
+  console.log(numero.toLocaleString("en-US"));
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -40,15 +47,31 @@ function Epic() {
   const searchData = (e) => {
     e.preventDefault();
 
-    if (validateDates(selectedDate, setDateErrors, setDateSuccess)) {
-      getAPI(
-        selectedDate,
-        setSelectedDate,
-        setDateErrors,
-        setDateSuccess,
-        setData,
-        setIsLoading
+    if (selectedDate) {
+      setError({ error: true, message: "" });
+      const formated = formatDateSingleDateComponent(selectedDate);
+      getAPI(formated);
+    } else {
+      setError({ error: true, message: "You must enter a date" });
+    }
+  };
+
+  const getAPI = async (selectedDate) => {
+    try {
+      setIsLoading(true);
+      const request = await fetch(
+        `https://api.nasa.gov/EPIC/api/natural/date/${selectedDate}?api_key=DEMO_KEY`
       );
+      const response = await request.json();
+      sessionStorage.setItem("NASA-EPIC", JSON.stringify(response));
+      setIsLoading(false);
+      setData(response);
+    } catch (error) {
+      setTimeout(() => {
+        setIsLoading(false);
+        swal("Something went wrong! Check your connection and try again!");
+      }, 3000);
+      console.error(error);
     }
   };
 
@@ -75,53 +98,18 @@ function Epic() {
         text1={dataEpic.mainComponent.text1}
       />
       <form onSubmit={searchData}>
-        <div className="flex flex-col  items-center mt-5 ">
-          <div className="h-24 flex flex-col">
-            <div className="flex justify-start items-center">
-              <span className="text-md text-black-700 font-light ">
-                Enter Date
-              </span>
-            </div>
-            <div className="flex-column items-center">
-              <div className="flex items-center ">
-                <input
-                  type="date"
-                  className="w-72  sm:h-16 h-10 border cursor-pointer focus:outline-none px-2 rounded text-gray-700 font-light hover:bg-gray-100"
-                  value={selectedDate}
-                  onChange={(e) => {
-                    validateDates(
-                      e.target.value,
-                      setDateErrors,
-                      setDateSuccess
-                    );
-                    setSelectedDate(e.target.value);
-                  }}
-                />
-                {dateErrors.selectedDate.error && (
-                  <RiErrorWarningFill className="text-red-300 text-2xl ml-1 font-light " />
-                )}
-                {dateSuccess.selectedDate.success && (
-                  <TiTick className="text-green-700 text-2xl ml-1 font-light" />
-                )}
-              </div>
-            </div>
-            {dateErrors.selectedDate.error && (
-              <div className="text-red-500 text-start text-xs mt-1">
-                {dateErrors.selectedDate.message}
-              </div>
-            )}
-          </div>
-        </div>
+        <DatePickerComponent
+          error={error}
+          setError={setError}
+          setSelectedDate={setSelectedDate}
+          selectedDate={selectedDate}
+        />
+      
 
         <div className="flex justify-center ">
           <div>
             {!isLoading ? (
-              <button
-                type="submit"
-                className=" h-14 w-24 px-3 py-2 bg-gray-100 border rounded text-gray-500 hover:opacity-200  hover:text-black hover:bg-gray-200 sm:mt-5 "
-              >
-                Search
-              </button>
+         <Button type={'submit'} action={'Search'}/>
             ) : (
               <div className="flex justify-center mt-5">
                 <CircleLoader color={"#d4d6da"} size={50} />

@@ -23,7 +23,6 @@ function DetailsEpic() {
     findObject();
   }, [slug]);
 
-  console.log(slug);
 
   if (!currentObject) {
     return (
