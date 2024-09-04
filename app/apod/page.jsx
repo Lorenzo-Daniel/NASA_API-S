@@ -1,5 +1,5 @@
 import { dataApod } from "./data";
-import MainComponent from "../components/MainComponent";
+import MainComponent from "../components/TextComponent";
 import ButtonLink from "../components/ButtonLink";
 
 export const metadata = {

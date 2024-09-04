@@ -5,7 +5,7 @@ import { TiTick } from "react-icons/ti";
 import { CircleLoader } from "react-spinners";
 import { RiErrorWarningFill } from "react-icons/ri";
 import Link from "next/link";
-import MainComponent from "../components/MainComponent";
+import MainComponent from "../components/TextComponent";
 import { dataMarsRover } from "./data";
 import { getAPI } from "./functionsMarsRover";
 import ResponsivePagination from "react-responsive-pagination";

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import MainComponent from "../components/MainComponent";
+import MainComponent from "../components/TextComponent";
 import { dataPodcast } from "./data";
 import Link from "next/link";
 import Select from "react-select";

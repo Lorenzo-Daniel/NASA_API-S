@@ -5,13 +5,13 @@ import { useEffect, useState } from "react";
 import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import { CircleLoader } from "react-spinners";
-
+import { swalFullImg } from "@/app/helpers/swal";
 function Details() {
   const { slug } = useParams();
   const getSS = JSON.parse(sessionStorage.getItem("NASA-pictures")) || [];
   const [currentObject, setCurrentObject] = useState(null);
-
-
+  const [fullImg, setFullImg] = useState(false);
+  const [show, setShow] = useState(false);
   useEffect(() => {
     const findObject = () => {
       const title = decodeURIComponent(slug);
@@ -29,19 +29,15 @@ function Details() {
       </div>
     );
   }
-  const { url, explanation, title,date } = currentObject;
+  const { url, explanation, title, date } = currentObject;
 
   return (
-    <div>
-      <h1 className="text-3xl  font-extralight text-center pt-10 px-3">
+    <div className="mt-8">
+      <h1 className="text-3xl  font-extralight text-center px-3 text-gray-500">
         {title}
       </h1>
-
-      <div className="flex flex-col  items-center justify-center  p-5">
-        <p className="text-center mb-5  md:m-10 max-w-screen-md">
-          {explanation}
-        </p>
-        <div className=" md:max-w-xl" >
+      <div className="flex flex-col  items-center justify-center p-5 mt-5 relative">
+        <div className=" md:max-w-xl">
           <InnerImageZoom
             src={url}
             zoomSrc={url}
@@ -50,9 +46,35 @@ function Details() {
             moveType="drag"
             hideCloseButton={true}
           />
-          <span>{date}</span>
+          <div className="flex justify-between">
+            <span>{date}</span>
+            <span
+              className="cursor-pointer"
+              onClick={() => setFullImg((prev) => !prev)}
+            >
+              full Img
+            </span>
+          </div>
+        </div>
+        <div className="border p-5 border-black ">
+          <button
+            className="border flex"
+            onClick={() => setShow((prev) => !prev)}
+          >
+            desplegar
+          </button>
+          <p
+            className={`${
+              show
+                ? " text-center 5  max-w-screen-md my-5 text-gray-800"
+                : "hidden"
+            }`}
+          >
+            {explanation}
+          </p>
         </div>
       </div>
+      {fullImg && swalFullImg(url, setFullImg)}
     </div>
   );
 }

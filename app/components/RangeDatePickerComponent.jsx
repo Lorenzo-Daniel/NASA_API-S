@@ -1,8 +1,8 @@
-import React, { forwardRef, useState } from "react";
+import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-function DateRangePickerComponent({
+function RangeDatePickerComponent({
   startDate,
   endDate,
   setStartDate,
@@ -10,14 +10,15 @@ function DateRangePickerComponent({
   error,
   setError,
 }) {
-
   const formatedDate = (date) => {
     if (!date) return "";
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate() + 1 ).padStart(2, "0");
-    return `${year}-${month}-${day }`;
+    const day = String(date.getDate() + 1).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   };
+
+  console.log(error);
 
   const onChange = (dates) => {
     const [start, end] = dates;
@@ -26,12 +27,11 @@ function DateRangePickerComponent({
     setError(false);
   };
 
-
   return (
-    <div className="flex justify-center mt-10 mb-5">
-      <div className="flex flex-col ">
+    <div className="relative">
+      <div>
         <DatePicker
-        placeholderText="Enter a date range"
+          placeholderText="Enter a date range"
           selected={startDate ? new Date(startDate) : null}
           onChange={onChange}
           startDate={startDate ? new Date(startDate) : null}
@@ -50,15 +50,15 @@ function DateRangePickerComponent({
           dayClassName={(date) =>
             "w-12 h-7 lg:h-10 flex items-center justify-center text-sm"
           }
-    
         />
-        <span className="text-sm text-red-500">
-          {error.error && error.messagge}
-        </span>
       </div>
+      {error.error && (
+        <span className="text-sm text-red-500 absolute left-1">
+          {error.message}
+        </span>
+      )}
     </div>
   );
 }
 
-export default DateRangePickerComponent;
-
+export default RangeDatePickerComponent;

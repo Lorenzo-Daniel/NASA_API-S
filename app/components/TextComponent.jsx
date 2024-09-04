@@ -1,9 +1,9 @@
 import React from 'react'
 
-const MainComponent = ({title, text1, text2}) => {
+const TextComponent = ({title, text1, text2}) => {
   return (
     <div className=" max-w-sm md:max-w-xl  lg:max-w-4xl m-auto px-2  ">
-      <h1 className="text-4xl md:text-4xl font-extralight text-center mx-5 mt-10 mb-5">
+      <h1 className="text-4xl md:text-4xl font-extralight text-center mx-5 mt-10 mb-5 text-gray-600">
         {title.toUpperCase()}
       </h1>
       <p className="text-gray-500 font-light text-md sm:text-xl   text-center ">
@@ -16,4 +16,4 @@ const MainComponent = ({title, text1, text2}) => {
   );
 };
 
-export default MainComponent;
+export default TextComponent;

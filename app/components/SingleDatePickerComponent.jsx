@@ -1,15 +1,13 @@
 import React, { forwardRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { LuCalendar } from "react-icons/lu";
 
-function DatePickerComponent({
+function SingleDatePickerComponent({
   error,
   setError,
   setSelectedDate,
   selectedDate,
 }) {
-
   const formatedDate = (date) => {
     if (!date) return "";
     const year = date.getFullYear();
@@ -20,15 +18,16 @@ function DatePickerComponent({
 
   const handleChange = (date) => {
     setSelectedDate(formatedDate(date));
-    setError({ error: false, message: "" }); 
+    setError({ error: false, message: "" });
   };
 
   return (
-    <div className="flex justify-center mt-10 mb-5 ">
-      <div className="flex flex-col">
-      
+    <div className="relative">
+      <div>
         <DatePicker
-        placeholderText="Enter a date"
+          popperPlacement="bottom-start"
+          portalId="root-portal"
+          placeholderText="Enter a date"
           selected={selectedDate ? new Date(selectedDate) : null}
           onChange={handleChange}
           maxDate={new Date()}
@@ -45,13 +44,16 @@ function DatePickerComponent({
             "w-12 h-7 lg:h-10  flex items-center justify-center text-sm"
           }
         />
-        {error.error && ( // Check for error before displaying the message
-          <span className="text-sm text-red-500">{error.message}</span>
-        )}
       </div>
+      {error.error && ( 
+        <span
+          className="text-sm text-red-500 absolute left-1"
+        >
+          {error.message}
+        </span>
+      )}
     </div>
   );
 }
 
-export default DatePickerComponent;
-
+export default SingleDatePickerComponent;

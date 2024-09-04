@@ -15,7 +15,7 @@ function RootLayout({ children }) {
       <body className={inter.className}>
         <div id="__next">
           <Navbar />
-          <main className="bg-gray-200  ">{children}</main>
+          <main className="bg-[#f0f2f5] ">{children}</main>
           <Footer />
         </div>
       </body>

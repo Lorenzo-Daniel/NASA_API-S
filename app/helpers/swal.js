@@ -1,14 +1,37 @@
 import Swal from "sweetalert2";
 
 export const swal = (message) => {
-    Swal.fire({
-        title: message,
-        showConfirmButton: false,
-        showCloseButton: true,
-        customClass: {
-          popup: "h-60",
-          title: "font-extralight ",
-          closeButton: "hover:text-gray-500",
-        },
-      });
-}
+  Swal.fire({
+    title: message,
+    showConfirmButton: false,
+    showCloseButton: true,
+    customClass: {
+      popup: "h-60",
+      title: "font-extralight ",
+      closeButton: "hover:text-gray-500",
+    },
+  });
+};
+
+export const swalFullImg = (url, setFullImg) => {
+  Swal.fire({
+    imageUrl: url,
+    showCloseButton: true,
+    showConfirmButton: false,
+    imageAlt: "A tall image",
+    showClass: {
+      popup: "", // Elimina la clase de animación para la aparición
+    },
+    willClose: () => {
+      setFullImg(false);
+    },
+    imageAlt: "A tall image",
+    customClass: {
+      container: " p-0",
+      popup: "w-dvw bg-black min-h-dvh ",
+      closeButton: "hover:text-gray-200",
+      image: "p-1",
+      htmlContainer: "bg-black",
+    },
+  });
+};

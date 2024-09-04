@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import MainComponent from "../components/MainComponent";
+import MainComponent from "./TextComponent";
 import { data } from "../data";
 
 function Home() {

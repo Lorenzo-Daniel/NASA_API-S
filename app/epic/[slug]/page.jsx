@@ -6,7 +6,7 @@ import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import { CircleLoader } from "react-spinners";
 import DataBlock from "./DataBlock";
-
+import { dateFormat } from "@/app/helpers/formatDate";
 function DetailsEpic() {
   const { slug } = useParams();
   const getSS = JSON.parse(sessionStorage.getItem("NASA-EPIC")) || [];
@@ -22,7 +22,6 @@ function DetailsEpic() {
 
     findObject();
   }, [slug]);
-
 
   if (!currentObject) {
     return (
@@ -72,18 +71,51 @@ function DetailsEpic() {
     },
   ];
 
-  const transformFormatDate = (date) => {
-    const dateObj = new Date(date);
-    const year = dateObj.getFullYear().toString();
-    const month = ("0" + (dateObj.getMonth() + 1)).slice(-2); // Obtener mes correcto
-    const day = ("0" + dateObj.getDate()).slice(-2); // Obtener día correcto
-    const formattedDate = `${year}/${month}/${day}`; // Formato correcto para la URL
-    return formattedDate;
-  };
-  const formattedDate = transformFormatDate(date);
+  console.log(dataNameLists);
+  
+
+  const formattedDate = dateFormat(date, "/");
+  euclideanDistanceFormula
+  function euclideanDistanceFormula(x, y, z) {
+    return Math.sqrt(x * x + y * y + z * z);
+  }
+
+  const sunDistance = euclideanDistanceFormula(
+    -103213045.333389,
+    102078555.537691,
+    44250648.363128
+  );
+
+  // console.log(roverToEarthDistance);
+
+  const moonDistance = euclideanDistanceFormula(
+    -306087.79995,
+    222913.027842,
+    125048.52258
+  );
+
+  const roverToEarth = euclideanDistanceFormula(
+    -1107096.27596,
+    921266.73853,
+    252121.533454
+  );
+
+  const roverToSun = Number(
+    (sunDistance - roverToEarth).toFixed()
+  ).toLocaleString("en-US");
+
+  const roverToMoon = Number(
+    (roverToEarth - moonDistance).toFixed()
+  ).toLocaleString("en-US");
+
+  const roverDistance = Number(roverToEarth.toFixed()).toLocaleString("en-US");
+
+  console.log(roverToSun, "roverToSunDistance");
+  console.log(roverToMoon, "roverToMoonDistance");
+  console.log(roverDistance, "roverToEarth");
 
   return (
-    <main className="flex flex-col 2xl:flex-row 2xl:flex-fill 2xl:items-center  2xl:justify-evenly  bg-black pb-20" >
+    <main className="flex flex-col 2xl:flex-row 2xl:flex-fill 2xl:items-center  2xl:justify-evenly  bg-black pb-20">
       <div className="2xl:max-w-4xl ">
         <InnerImageZoom
           src={`https://epic.gsfc.nasa.gov/archive/natural/${formattedDate}/png/${image}.png`}
@@ -97,7 +129,6 @@ function DetailsEpic() {
       <div>
         <div className="container p-5 m-auto grid grid-cols-1 md:grid-cols-2  gap-4 mt-10">
           <span className="text-white text-center flex  justify-center items-center">
-            {" "}
             Date: {date}
           </span>
           {dataNameLists.map((data, index) => {

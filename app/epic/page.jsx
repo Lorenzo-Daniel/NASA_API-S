@@ -4,39 +4,22 @@ import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Image from "next/image";
 import Link from "next/link";
-import MainComponent from "../components/MainComponent";
-import dynamic from "next/dynamic";
+import MainComponent from "../components/TextComponent";
 import { CircleLoader } from "react-spinners";
 import { dataEpic } from "./data";
 import { Carousel } from "react-responsive-carousel";
-import DatePickerComponent from "../components/DatePickerComponent";
-import { formatDateSingleDateComponent } from "../helpers/formatDate";
+import DatePickerComponent from "../components/SingleDatePickerComponent";
+import { dateFormat } from "../helpers/formatDate";
 import Button from "../components/Button";
-const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
+import { swal } from "../helpers/swal";
 function Epic() {
   const [selectedDate, setSelectedDate] = useState("");
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [carouselIndicators, setCarouselIndicators] = useState(false);
   const [error, setError] = useState({ error: false, message: "" });
-
-  const arrayForSkeleton = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
-  ];
-
-  function raizCuadradaSumaCuadrados(a, b, c) {
-    return Math.sqrt(a * a + b * b + c * c);
-  }
-
-  const response = raizCuadradaSumaCuadrados(
-    -106651406.22832,
-    99004406.571716,
-    42917919.110164
-  );
-
-  let numero = Number(response.toFixed());
-  console.log(numero.toLocaleString("en-US"));
-
+  
+  
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedData = JSON.parse(sessionStorage.getItem("NASA-EPIC")) || [];
@@ -49,12 +32,27 @@ function Epic() {
 
     if (selectedDate) {
       setError({ error: true, message: "" });
-      const formated = formatDateSingleDateComponent(selectedDate);
+      const formated = dateFormat(selectedDate,'-');
       getAPI(formated);
     } else {
       setError({ error: true, message: "You must enter a date" });
     }
   };
+
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCarouselIndicators(window.innerWidth > 768);
+    }
+
+    const handleResize = () => {
+      setCarouselIndicators(window.innerWidth > 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const getAPI = async (selectedDate) => {
     try {
@@ -75,22 +73,6 @@ function Epic() {
     }
   };
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setCarouselIndicators(window.innerWidth > 768);
-    }
-
-    const handleResize = () => {
-      setCarouselIndicators(window.innerWidth > 768);
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
   return (
     <main className="mb-20">
       <MainComponent
@@ -104,12 +86,10 @@ function Epic() {
           setSelectedDate={setSelectedDate}
           selectedDate={selectedDate}
         />
-      
-
         <div className="flex justify-center ">
           <div>
             {!isLoading ? (
-         <Button type={'submit'} action={'Search'}/>
+              <Button type={"submit"} action={"Search"} />
             ) : (
               <div className="flex justify-center mt-5">
                 <CircleLoader color={"#d4d6da"} size={50} />
@@ -122,7 +102,7 @@ function Epic() {
         rightArrow={"next"}
         showArrows={true}
         showIndicators={carouselIndicators}
-        className="bg-black m-5 mt-10 "
+        className="bg-black m-5 mt-10 min-h-96 "
         showThumbs={false}
       >
         {!isLoading
@@ -131,7 +111,7 @@ function Epic() {
               const year = fullDate.getFullYear().toString();
               const month = ("0" + (fullDate.getMonth() + 1)).slice(-2);
               const date = ("0" + fullDate.getDate()).slice(-2);
-              const formatedDate = `${year}/${month}/${date}`;
+              const formattedDate = `${year}/${month}/${date}`;
               return (
                 <div
                   key={obj.identifier}
@@ -139,7 +119,7 @@ function Epic() {
                 >
                   <Link href={`epic/${obj?.identifier}`}>
                     <Image
-                      src={`https://epic.gsfc.nasa.gov/archive/natural/${formatedDate}/png/${obj.image}.png`}
+                      src={`https://epic.gsfc.nasa.gov/archive/natural/${formattedDate}/png/${obj.image}.png`}
                       alt={obj.identifier}
                       width={800}
                       height={0}
@@ -151,18 +131,13 @@ function Epic() {
                 </div>
               );
             })
-          : arrayForSkeleton?.map((img, index) => {
+          : Array.from({ length: 22 }, (_, i) => i).map((_, i) => {
               return (
-                <div key={index}>
-                  <div className="h-96 flex justify-center overflow-hidden flex-fill bg-gray-100 animate__animated animate__fadeOut animate__infinite 	 animate__slower">
-                    <Image
-                      src={""}
-                      alt={""}
-                      width={600}
-                      height={0}
-                      className="border rounded "
-                    />
-                  </div>
+                <div
+                  key={i}
+                  className="h-96 flex justify-center  flex-fill bg-gray-300 motion-safe:animate-pulse"
+                >
+                  <span className="mt-3 text-gray-500">loading ...</span>
                 </div>
               );
             })}

@@ -7,7 +7,7 @@ function DataBlock({ title, array }) {
       {array.map((element, index) => {
         return (
           <div key={index} className=" p-1 flex flex-col items-start flex-fill">
-            <span className="text-white" key={index}>
+            <span className="text-white" >
               {element.name}
               <span className="text-white">: {element.value}</span>
             </span>

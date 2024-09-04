@@ -5,7 +5,7 @@ import { FaEnvelope } from "react-icons/fa";
 
 function Footer() {
   return (
-    <div className="flex h-12 justify-center items-center mt-15 bg-gradient-to-l from-gray-300  to-gray-100 border-t-2 border-slate-300">
+    <div className="flex h-12 justify-center items-center mt-15 bg-gradient-to-l from-gray-300  to-gray-100 border-t-2 border-slate-200">
       <div className="flex items-center">
         <div className="">
           <p className="">Developed by Daniel Lorenzo</p>
