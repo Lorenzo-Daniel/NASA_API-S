@@ -24,8 +24,8 @@ function Podcast() {
     const fetchData = async () => {
       const storedData = JSON.parse(sessionStorage.getItem("NASA-podcast"));
       if (storedData) {
-          setData(storedData);
-          setLoading(true)
+        setData(storedData);
+        setLoading(true);
         await fetchAudioLinks(storedData);
       } else {
         getAPI();
@@ -51,7 +51,7 @@ function Podcast() {
   };
 
   const getAPI = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await fetch(
         `https://images-api.nasa.gov/search?q=HWHAP`
@@ -66,9 +66,10 @@ function Podcast() {
       setData(sortedData);
 
       await fetchAudioLinks(sortedData);
-    } catch (error) { setTimeout(() => {
+    } catch (error) {
+      setTimeout(() => {
         setLoading(false);
-        swalError("Something went wrong! reload and verify your conection!")
+        swalError("Something went wrong! reload and verify your conection!");
       }, 3000);
       console.error("Ocurrió un error al obtener los datos Nasa Src:", error);
     }
@@ -91,7 +92,6 @@ function Podcast() {
     label: item.data[0].title.replace(/^HWHAP\s*/, ""),
   }));
 
-
   return (
     <div>
       <TextComponent
@@ -100,24 +100,30 @@ function Podcast() {
       />
 
       <div>
-      <div className="mt-5 w-sm ">
-            <Select
-              value={selectedOption}
-              onChange={handleSelectChange}
-              options={options}
-              className={`${loading ? "px-2 animate__animated animate__fadeIn animate__infinite animate__slow max-w-sm m-auto border border-gray-300 rounded" : "max-w-sm m-auto px-2"}`}
-              isDisabled = {loading}
-              placeholder='Select chapter...'
-            />
-          </div>
-      
+        <div className="mt-5 w-sm ">
+          <Select
+            value={selectedOption}
+            onChange={handleSelectChange}
+            options={options}
+            className={`${
+              loading
+                ? "px-2 animate__animated animate__fadeIn animate__infinite animate__slow max-w-sm m-auto border border-gray-300 rounded"
+                : "max-w-sm m-auto px-2"
+            }`}
+            isDisabled={loading}
+            placeholder="Select chapter..."
+          />
+        </div>
+
         <div className="flex justify-center mt-10">
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 p-2">
             {!loading
               ? data.map((item, i) => (
-            <AudioComponent key={i} data={item} i={i} audioLinks={audioLinks}/>
+                  <div key={i}>
+                    <AudioComponent data={item} i={i} audioLinks={audioLinks} />
+                  </div>
                 ))
-              : Array.from({length:20},((_,i)=> i)).map((_,i) => (
+              : Array.from({ length: 20 }, (_, i) => i).map((_, i) => (
                   <div
                     key={i}
                     className="flex flex-col border border-slate-300 p-2 w-44  md:w-64 xl:w-80 animate__animated animate__fadeIn animate__infinite 	 animate__slow"
