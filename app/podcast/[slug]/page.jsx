@@ -28,9 +28,6 @@ function DetailsPodcast() {
     const findObject = async () => {
       const title = decodeURIComponent(slug);
       const find = getSS.find((element) => element.data[0].title === title);
-      const findIdx = getSS.findIndex(
-        (element) => element.data[0].title === title
-      );
       setCurrentIndex(findIdx);
       setCurrentObject(find);
 
@@ -56,7 +53,7 @@ function DetailsPodcast() {
     <div>
       <div className="flex justify-center py-10 bg-gray-200">
         {audioLink ? (
-          <AudioComponent data={currentObject} audioLinks={audioLink} i={0} />
+          ''
         ) : (
           <CircleLoader color={"#d4d6da"} size={30} />
         )}
