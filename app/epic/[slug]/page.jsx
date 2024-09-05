@@ -2,11 +2,15 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import { CircleLoader } from "react-spinners";
 import DataBlock from "./DataBlock";
 import { dateFormat } from "@/app/helpers/formatDate";
+import InnerImageZoomComponent from "@/app/components/InnerImageZoomComponent";
+import TypeWriter from "@/app/components/TypeWryter";
+
+//-------------------------------------
+
 function DetailsEpic() {
   const { slug } = useParams();
   const getSS = JSON.parse(sessionStorage.getItem("NASA-EPIC")) || [];
@@ -71,11 +75,8 @@ function DetailsEpic() {
     },
   ];
 
-  console.log(dataNameLists);
-  
+  // const formattedDate = dateFormat(date, "/");
 
-  const formattedDate = dateFormat(date, "/");
-  euclideanDistanceFormula
   function euclideanDistanceFormula(x, y, z) {
     return Math.sqrt(x * x + y * y + z * z);
   }
@@ -115,29 +116,45 @@ function DetailsEpic() {
   console.log(roverDistance, "roverToEarth");
 
   return (
-    <main className="flex flex-col 2xl:flex-row 2xl:flex-fill 2xl:items-center  2xl:justify-evenly  bg-black pb-20">
-      <div className="2xl:max-w-4xl ">
-        <InnerImageZoom
-          src={`https://epic.gsfc.nasa.gov/archive/natural/${formattedDate}/png/${image}.png`}
-          zoomSrc={`https://epic.gsfc.nasa.gov/archive/natural/${formattedDate}/png/${image}.png`}
-          zoomScale={1}
-          zoomType="click"
-          moveType="drag"
-          hideCloseButton={true}
+    <main className=" min-h-dvh bg-black pb-20 flex justify-evenly">
+    <div className="lg:flex items-center">
+
+      <div className="lg:max-w-xl">
+        <InnerImageZoomComponent
+          url={`https://epic.gsfc.nasa.gov/archive/natural/${dateFormat(
+            date,
+            "/"
+          )}/png/${image}.png`}
+          date={date}
         />
       </div>
-      <div>
-        <div className="container p-5 m-auto grid grid-cols-1 md:grid-cols-2  gap-4 mt-10">
-          <span className="text-white text-center flex  justify-center items-center">
-            Date: {date}
-          </span>
-          {dataNameLists.map((data, index) => {
-            return (
-              <DataBlock key={index} title={data.name} array={data.array} />
-            );
-          })}
-        </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 m-auto gap-4 p-4 text-sm ">
+        {dataNameLists.map((data, index) => {
+          return <DataBlock key={index} title={data.name} array={data.array} />;
+        })}
       </div>
+    </div>
+
+      {/* <div className="flex flex-col  lg:flex-row  lg:justify-evenly bg-red-200 pb-20">
+        <div className="  m-auto max-w-xl">
+          <InnerImageZoomComponent
+            url={`https://epic.gsfc.nasa.gov/archive/natural/${dateFormat(
+              date,
+              "/"
+            )}/png/${image}.png`}
+            date={date}
+          />
+        </div>
+        
+          <div className="container bg-green-400   grid grid-cols-1 md:grid-cols-2  gap-4 ">
+            {dataNameLists.map((data, index) => {
+              return (
+                <DataBlock key={index} title={data.name} array={data.array} />
+              );
+            })}
+          </div>
+      </div> */}
     </main>
   );
 }

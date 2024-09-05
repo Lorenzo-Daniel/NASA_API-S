@@ -1,17 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import dynamic from "next/dynamic";
 import TextComponent from "../../components/TextComponent";
 import Main from "./Main";
 import "sweetalert2";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import { singleDate } from "./data";
-import { swal } from "@/app/helpers/swal";
+import { swalError } from "@/app/helpers/swal";
 import SingleDateForm from "@/app/components/SingleDateForm";
 import { dateFormat } from "@/app/helpers/formatDate";
-import { searchData, getAPI } from "./singleDateFunctions";
-import Image from "next/image";
-import Swal from "sweetalert2";
+
 //---------------------------------------------
 
 function SingleDate() {
@@ -33,8 +30,6 @@ function SingleDate() {
     }
   };
 
-
-
   const getAPI = async (selectedDate) => {
     try {
       setIsLoading(true);
@@ -47,7 +42,7 @@ function SingleDate() {
     } catch (error) {
       setTimeout(() => {
         setIsLoading(false);
-        swal("Something went wrong! Check your connection and try again!");
+        swalError("Something went wrong! Check your connection and try again!");
       }, 3000);
       console.error(error);
     }
@@ -69,13 +64,12 @@ function SingleDate() {
         isLoading={isLoading}
       />
 
-      <Main data={data} isLoading={isLoading} setFullImg={setFullImg} fullImg={fullImg} />
-
-        {/* <div className=" absolute bg-black bg-opacity-75 w-dvw min-h-dvh h-auto  flex justify-center p-10 top-0">
-          <Image className="" src={data.url} width={1000} height={800} />
-          <button onClick={()=>setFullImage(false)}>close</button>
-        </div> 
-      )}*/}
+      <Main
+        data={data}
+        isLoading={isLoading}
+        setFullImg={setFullImg}
+        fullImg={fullImg}
+      />
     </section>
   );
 }

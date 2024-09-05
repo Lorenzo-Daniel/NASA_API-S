@@ -4,22 +4,23 @@ import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Image from "next/image";
 import Link from "next/link";
-import MainComponent from "../components/TextComponent";
-import { CircleLoader } from "react-spinners";
+import TextComponent from "../components/TextComponent";
 import { dataEpic } from "./data";
 import { Carousel } from "react-responsive-carousel";
-import DatePickerComponent from "../components/SingleDatePickerComponent";
 import { dateFormat } from "../helpers/formatDate";
-import Button from "../components/Button";
-import { swal } from "../helpers/swal";
+import SingleDateForm from "../components/SingleDateForm";
+import { swalError } from "../helpers/swal";
+
+
+//-------------------------------------------
+
 function Epic() {
   const [selectedDate, setSelectedDate] = useState("");
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [carouselIndicators, setCarouselIndicators] = useState(false);
   const [error, setError] = useState({ error: false, message: "" });
-  
-  
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedData = JSON.parse(sessionStorage.getItem("NASA-EPIC")) || [];
@@ -32,13 +33,12 @@ function Epic() {
 
     if (selectedDate) {
       setError({ error: true, message: "" });
-      const formated = dateFormat(selectedDate,'-');
+      const formated = dateFormat(selectedDate, "-");
       getAPI(formated);
     } else {
       setError({ error: true, message: "You must enter a date" });
     }
   };
-
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -61,13 +61,22 @@ function Epic() {
         `https://api.nasa.gov/EPIC/api/natural/date/${selectedDate}?api_key=DEMO_KEY`
       );
       const response = await request.json();
-      sessionStorage.setItem("NASA-EPIC", JSON.stringify(response));
-      setIsLoading(false);
-      setData(response);
+      console.log(response);
+      
+      if(response.length){
+
+        sessionStorage.setItem("NASA-EPIC", JSON.stringify(response));
+        setIsLoading(false);
+        setData(response);
+      }else {
+        swalError("We dont have pictures for this date! Try another date!");
+        setIsLoading(false);
+
+      }
     } catch (error) {
       setTimeout(() => {
         setIsLoading(false);
-        swal("Something went wrong! Check your connection and try again!");
+        swalError("Something went wrong! Check your connection and try again!");
       }, 3000);
       console.error(error);
     }
@@ -75,29 +84,20 @@ function Epic() {
 
   return (
     <main className="mb-20">
-      <MainComponent
+      <TextComponent
         title={dataEpic.mainComponent?.title}
         text1={dataEpic.mainComponent.text1}
       />
-      <form onSubmit={searchData}>
-        <DatePickerComponent
-          error={error}
-          setError={setError}
-          setSelectedDate={setSelectedDate}
-          selectedDate={selectedDate}
-        />
-        <div className="flex justify-center ">
-          <div>
-            {!isLoading ? (
-              <Button type={"submit"} action={"Search"} />
-            ) : (
-              <div className="flex justify-center mt-5">
-                <CircleLoader color={"#d4d6da"} size={50} />
-              </div>
-            )}
-          </div>
-        </div>
-      </form>
+
+      <SingleDateForm
+        searchData={searchData}
+        error={error}
+        setError={setError}
+        setSelectedDate={setSelectedDate}
+        selectedDate={selectedDate}
+        isLoading={isLoading}
+      />
+
       <Carousel
         rightArrow={"next"}
         showArrows={true}
@@ -107,11 +107,7 @@ function Epic() {
       >
         {!isLoading
           ? data?.map((obj, index) => {
-              const fullDate = new Date(data[0].date);
-              const year = fullDate.getFullYear().toString();
-              const month = ("0" + (fullDate.getMonth() + 1)).slice(-2);
-              const date = ("0" + fullDate.getDate()).slice(-2);
-              const formattedDate = `${year}/${month}/${date}`;
+              const formattedDate = dateFormat(data[0].date, "/");
               return (
                 <div
                   key={obj.identifier}

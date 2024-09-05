@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 
-export const swal = (message) => {
+export const swalError = (message) => {
   Swal.fire({
     title: message,
     showConfirmButton: false,
@@ -28,10 +28,11 @@ export const swalFullImg = (url, setFullImg) => {
     imageAlt: "A tall image",
     customClass: {
       container: " p-0",
-      popup: "w-dvw bg-black min-h-dvh ",
+      popup: "w-dvw bg-[#000000f9] min-h-dvh rounded-none ",
       closeButton: "hover:text-gray-200",
-      image: "p-1",
+      image: "p-1 ",
       htmlContainer: "bg-black",
     },
   });
 };
+

@@ -2,16 +2,25 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import { CircleLoader } from "react-spinners";
 import { swalFullImg } from "@/app/helpers/swal";
+import { IoArrowBackOutline } from "react-icons/io5";
+import Link from "next/link";
+import DescriptionTextComponent from "@/app/components/DescriptionTextComponent";
+import InnerImageZoomComponent from "@/app/components/InnerImageZoomComponent";
+
+//-------------------------------------
+
 function Details() {
   const { slug } = useParams();
   const getSS = JSON.parse(sessionStorage.getItem("NASA-pictures")) || [];
-  const [currentObject, setCurrentObject] = useState(null);
+  const [currentObject, setCurrentObject] = useState({});
   const [fullImg, setFullImg] = useState(false);
-  const [show, setShow] = useState(false);
+  const [drop, setDrop] = useState(false);
+  const [wait, setWait] = useState(false);
+  const { url, explanation, title, date } = currentObject;
+
   useEffect(() => {
     const findObject = () => {
       const title = decodeURIComponent(slug);
@@ -22,6 +31,14 @@ function Details() {
     findObject();
   }, [slug]);
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setWait(true);
+    }, 1000);
+
+    return () => clearTimeout(timeoutId); // Limpieza del timeout
+  }, []);
+
   if (!currentObject) {
     return (
       <div className="flex justify-center mt-5">
@@ -29,50 +46,38 @@ function Details() {
       </div>
     );
   }
-  const { url, explanation, title, date } = currentObject;
 
   return (
     <div className="mt-8">
       <h1 className="text-3xl  font-extralight text-center px-3 text-gray-500">
         {title}
       </h1>
-      <div className="flex flex-col  items-center justify-center p-5 mt-5 relative">
-        <div className=" md:max-w-xl">
-          <InnerImageZoom
-            src={url}
-            zoomSrc={url}
-            zoomScale={1}
-            zoomType="click"
-            moveType="drag"
-            hideCloseButton={true}
-          />
-          <div className="flex justify-between">
-            <span>{date}</span>
-            <span
-              className="cursor-pointer"
-              onClick={() => setFullImg((prev) => !prev)}
+      <div className=" md:max-w-2xl m-auto mt-10 px-5">
+        <InnerImageZoomComponent
+          url={url}
+          date={date}
+          setFullImg={setFullImg}
+        />
+
+        {wait ? (
+          <div>
+            <Link
+              href={"/apod/rangeDate"}
+              className="flex justify-center items-center border p-1 border-gray-300 rounded max-w-36 text-gray-500 hover:text-gray-600 hover:border-gray-500"
             >
-              full Img
-            </span>
+              <IoArrowBackOutline size={20} />
+              <span className="ml-1 text-sm">back to gallery</span>
+            </Link>
+
+            <DescriptionTextComponent
+              drop={drop}
+              setDrop={setDrop}
+              text={explanation}
+            />
           </div>
-        </div>
-        <div className="border p-5 border-black ">
-          <button
-            className="border flex"
-            onClick={() => setShow((prev) => !prev)}
-          >
-            desplegar
-          </button>
-          <p
-            className={`${
-              show
-                ? " text-center 5  max-w-screen-md my-5 text-gray-800"
-                : "hidden"
-            }`}
-          >
-            {explanation}
-          </p>
-        </div>
+        ) : (
+          ""
+        )}
       </div>
       {fullImg && swalFullImg(url, setFullImg)}
     </div>

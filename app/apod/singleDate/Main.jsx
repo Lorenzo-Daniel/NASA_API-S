@@ -1,21 +1,14 @@
 import React, { useState } from "react";
 import ReactPlayer from "react-player";
-import InnerImageZoom from "react-inner-image-zoom";
-import Image from "next/image";
-import Button from "@/app/components/Button";
-import Swal from "sweetalert2";
 import { swalFullImg } from "@/app/helpers/swal";
-
-
-
+import InnerImageZoomComponent from "@/app/components/InnerImageZoomComponent";
+import DescriptionTextComponent from "@/app/components/DescriptionTextComponent";
 //----------------------------------------
 
-
 function Main({ data, isLoading, setFullImg, fullImg }) {
+  
+  const [drop, setDrop] = useState(false);
   const { url, explanation, title, media_type, date } = data;
-  console.log(url);
-
-  const showModal = () => {};
 
   return (
     <div>
@@ -23,7 +16,7 @@ function Main({ data, isLoading, setFullImg, fullImg }) {
         <div className="flex flex-col items-center justify-center mt-5 p-5 ">
           <div className="flex justify-center  ">
             {media_type === "video" ? (
-              <div className="">
+              <div className="min-w-[320px] sm:w-[500px] sm:h-[300px]">
                 <ReactPlayer
                   url={url}
                   controls={true}
@@ -38,29 +31,22 @@ function Main({ data, isLoading, setFullImg, fullImg }) {
                 </h1>
                 <div className="flex flex-col  items-center justify-center p-5 mt-5 relative">
                   <div className=" md:max-w-xl">
-                    <InnerImageZoom
-                      src={url}
-                      zoomSrc={url}
-                      zoomScale={1}
-                      zoomType="click"
-                      moveType="drag"
-                      hideCloseButton={true}
+                    <InnerImageZoomComponent
+                      url={url}
+                      date={date}
+                      setFullImg={setFullImg}
                     />
-                    <div className="flex justify-between">
-                      <span>{date}</span>
-                      <span
-                        className="cursor-pointer"
-                        onClick={() => setFullImg((prev) => !prev)}
-                      >
-                        full Img
-                      </span>
-                    </div>
+
+                    {explanation && (
+                      <DescriptionTextComponent
+                        drop={drop}
+                        setDrop={setDrop}
+                        text={explanation}
+                      />
+                    )}
                   </div>
-                  <p className="text-center 5  max-w-screen-md my-5 text-gray-800">
-                    {explanation}
-                  </p>
                 </div>
-                {fullImg && swalFullImg(data.url, setFullImg)}
+                {fullImg && swalFullImg(data?.url, setFullImg)}
               </div>
             )}
           </div>

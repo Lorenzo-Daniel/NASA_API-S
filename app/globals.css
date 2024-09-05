@@ -41,19 +41,6 @@ width: 120px;
   @apply bg-gray-500 text-white border-gray-500;
 }
 
-/* .custom-datepicker {
-  border: 2px solid green;
-  border-radius: 4px;
-  padding: 8px;
-  font-size: 16px;
-}
-
-.custom-datepicker input {
-  border: none;
-  font-size: 16px;
-  padding: 8px;
-} */
-
 .react-datepicker__month-container {
   float: none; 
   width: 100%;
@@ -62,5 +49,18 @@ width: 120px;
 .react-datepicker__year-dropdown-container--select, .react-datepicker__month-dropdown-container--select, .react-datepicker__month-year-dropdown-container--select, .react-datepicker__year-dropdown-container--scroll, .react-datepicker__month-dropdown-container--scroll, .react-datepicker__month-year-dropdown-container--scroll {
   justify-content: space-around !important;
   margin:10px 20px 10px 20px !important;
+}
+
+.iiz__btn{
+  background: none !important;
+  color: white !important;
+  display: none !important;
+} 
+
+
+.iiz__hint{
+  color: white !important;
+  padding: 0px !important;
+  background-color: rgba(228, 204, 204, 0.308) !important;
 }
 

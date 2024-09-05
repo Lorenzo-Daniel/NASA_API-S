@@ -36,6 +36,7 @@ function Main({showRango,isLoading,data,}) {
                       width={300}
                       height={300}
                       className="object-cover h-full"
+                      
                     />
                     <p className="p-3 absolute left-0 bottom-0 text-white text-sm ">
                       {item.title}
