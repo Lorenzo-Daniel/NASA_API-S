@@ -1,11 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import MainComponent from "../components/TextComponent";
 import { dataPodcast } from "./data";
 import Link from "next/link";
 import Select from "react-select";
 import { useRouter } from "next/navigation"; // Cambié "next/router" a "next/navigation"
-import Swal from "sweetalert2";
+import { swalError } from "../helpers/swal";
+import TextComponent from "../components/TextComponent";
+import AudioComponent from "../components/AudioComponent";
 function Podcast() {
   const [data, setData] = useState([]);
   const [audioLinks, setAudioLinks] = useState({});
@@ -67,17 +68,7 @@ function Podcast() {
       await fetchAudioLinks(sortedData);
     } catch (error) { setTimeout(() => {
         setLoading(false);
-        Swal.fire({
-          title: "Something went wrong! reload and verify your conection!",
-          showConfirmButton: false,
-          showCloseButton: true,
-       
-          customClass: {
-            popup: "h-60",
-            title: "font-extralight ",
-            closeButton: "hover:text-gray-500",
-          },
-        });
+        swalError("Something went wrong! reload and verify your conection!")
       }, 3000);
       console.error("Ocurrió un error al obtener los datos Nasa Src:", error);
     }
@@ -99,10 +90,11 @@ function Podcast() {
     value: item.data[0].title, // Puedes ajustar cómo se construye el valor
     label: item.data[0].title.replace(/^HWHAP\s*/, ""),
   }));
-  const skeletonArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+
+
   return (
     <div>
-      <MainComponent
+      <TextComponent
         title={dataPodcast.mainComponent.title}
         text1={dataPodcast.mainComponent.text1}
       />
@@ -113,7 +105,7 @@ function Podcast() {
               value={selectedOption}
               onChange={handleSelectChange}
               options={options}
-              className={`${loading ? "  px-2 animate__animated animate__fadeIn animate__infinite 	 animate__slow max-w-sm m-auto" : "max-w-sm m-auto px-2"}`}
+              className={`${loading ? "px-2 animate__animated animate__fadeIn animate__infinite animate__slow max-w-sm m-auto border border-gray-300 rounded" : "max-w-sm m-auto px-2"}`}
               isDisabled = {loading}
               placeholder='Select chapter...'
             />
@@ -122,51 +114,21 @@ function Podcast() {
         <div className="flex justify-center mt-10">
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 p-2">
             {!loading
-              ? data.map((element, index) => (
-                  <div key={index} className="flex flex-col border p-2">
-                    <span className="text-sm md:text-md hidden md:block ml-1 mb-1">
-                      {element.data[0].title.replace(/.*Ep\d+\s+/, "")}
-                    </span>
-                    <span className="text-sm md:text-md lg:hidden md:hidden ml-1">
-                      {element.data[0].title.match(/Ep\d+/)}
-                    </span>
-                    {audioLinks[index] && (
-                      <div className="bg-blue-50 rounded lg:h-28 flex flex-col items-center justify-center relative">
-                        <audio
-                          src={audioLinks[index]}
-                          controls
-                          className="w-40 sm:w-44 md:w-60 lg:w-64 xl:w-80 p-5 rounded text-red"
-                        />
-                        <span className="text-sm md:text-md hidden absolute bottom-1 left-2 lg:block">
-                          {element.data[0].title.match(/Ep\d+/)}
-                        </span>
-                      </div>
-                    )}
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm md:text-md ml-1">
-                        {element.data[0].date_created.slice(0, 10)}
-                      </span>
-                      <Link
-                        href={`podcast/${element.data[0].title}`}
-                        className="mt-1 sm:px-3 px-1 sm:py-1 bg-gray-100 border rounded text-gray-500 hover:opacity-200 hover:text-black hover:bg-gray-200 text-sm"
-                      >
-                        More
-                      </Link>
-                    </div>
-                  </div>
+              ? data.map((item, i) => (
+            <AudioComponent key={i} data={item} i={i} audioLinks={audioLinks}/>
                 ))
-              : skeletonArray.map((element, index) => (
+              : Array.from({length:20},((_,i)=> i)).map((_,i) => (
                   <div
-                    key={index}
-                    className="flex flex-col border p-2 w-44  md:w-64 xl:w-80 animate__animated animate__fadeIn animate__infinite 	 animate__slow"
+                    key={i}
+                    className="flex flex-col border border-slate-300 p-2 w-44  md:w-64 xl:w-80 animate__animated animate__fadeIn animate__infinite 	 animate__slow"
                   >
-                    <span className="mb-1 h-3 bg-gray-100 w-12" />
-                    <div className="bg-gray-100   flex  items-center justify-center  h-32 md:h-28">
+                    <span className="mb-1 h-3 bg-gray-300 w-40" />
+                    <div className="bg-gray-200   flex  items-center justify-center  h-32 md:h-28">
                       <span className="w-32 sm:w-44 p-5 bg-zinc-300 mx-5" />
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="mt-1 sm:px-3 w-10 h-3  px-1 sm:py-1 bg-gray-100 " />
-                      <span className="mt-1 sm:px-3 w-10 h-3  px-1 sm:py-1 bg-gray-100" />
+                      <span className="mt-1 sm:px-3 w-14 h-3   px-1 sm:py-1 bg-gray-300 " />
+                      <span className="mt-1 sm:px-3 w-10 h-3  px-1 sm:py-1 bg-gray-300" />
                     </div>
                   </div>
                 ))}

@@ -3,9 +3,6 @@ import Button from "./Button";
 import { CircleLoader } from "react-spinners";
 import SingleDatePickerComponent from "./SingleDatePickerComponent";
 
-
-
-
 function SingleDateForm({
   searchData,
   error,
@@ -15,7 +12,6 @@ function SingleDateForm({
   isLoading,
 }) {
   return (
-    
     <form onSubmit={searchData} className="flex justify-center mt-10">
       <div className="flex flex-col sm:flex-row items-center gap-4 relative ">
         <SingleDatePickerComponent

@@ -30,7 +30,7 @@ export const getAPI = async (
             closeButton: "hover:text-gray-500",
           },
         });
-      }, 3000);
+      }, 5000);
     } else {
       // Guarda todos los resultados en sessionStorage
       sessionStorage.setItem("marsRover", JSON.stringify(res.photos));
