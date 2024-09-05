@@ -117,7 +117,7 @@ function Podcast() {
 
         <div className="flex justify-center mt-10">
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 p-2">
-            {!loading
+            {/* {!loading
               ? data.map((item, i) => (
                   <div key={i}>
                     <AudioComponent data={item} i={i} audioLinks={audioLinks} />
@@ -137,7 +137,7 @@ function Podcast() {
                       <span className="mt-1 sm:px-3 w-10 h-3  px-1 sm:py-1 bg-gray-300" />
                     </div>
                   </div>
-                ))}
+                ))} */}
           </div>
         </div>
       </div>
