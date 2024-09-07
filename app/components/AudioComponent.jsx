@@ -15,23 +15,23 @@ function AudioComponent({ data, audioLink, showButton }) {
 
   return (
     <div className="flex flex-col border rounded border-slate-300 p-2 max-w-80 min-w-80">
-      <span className="text-sm md:text-md hidden md:block ml-1 mb-1">
+      <span className="text-sm md:text-md ml-1 mb-1">
         {titleName}
       </span>
       {audioLink && (
-        <div className="bg-gray-300 rounded lg:h-28 flex flex-col items-center justify-center relative">
+        <div className="h-32 bg-gray-300 rounded lg:h-28 flex flex-col items-center justify-center relative">
           <audio
             src={audioLink}
             controls
             className="w-60 sm:w-44 md:w-60 lg:w-64 xl:w-80 p-5 rounded text-red"
           />
-          <span className="text-sm md:text-md hidden absolute bottom-1 left-2 lg:block">
+          <span className="text-xs md:text-md  absolute bottom-1 left-2 ">
             {episode}
           </span>
         </div>
       )}
       <div className="flex justify-between items-center">
-        <span className="text-sm md:text-md ml-1">
+        <span className="text-xs md:text-md ml-1">
           {date_created.slice(0, 10)}
         </span>
         {showButton && (

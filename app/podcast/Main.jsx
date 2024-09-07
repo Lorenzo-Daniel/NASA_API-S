@@ -19,7 +19,7 @@ function Main({data,isLoading,audioLinks}) {
         : Array.from({ length: 20 }, (_, i) => i).map((_, i) => (
             <div
               key={i}
-              className="flex flex-col border border-slate-300 p-2 w-44  md:w-64 xl:w-80 animate__animated animate__fadeIn animate__infinite 	 animate__slow"
+              className="flex flex-col border rounded border-slate-300 p-2 w-80 xl:w-80 animate__animated animate__fadeIn animate__infinite animate__slow"
             >
               <span className="mb-1 h-3 bg-gray-300 w-40" />
               <div className="bg-gray-200   flex  items-center justify-center  h-32 md:h-28">

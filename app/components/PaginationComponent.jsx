@@ -34,12 +34,12 @@ function PaginationComponent({
           />
         </div>
       ) : (
-        <div className="flex justify-center mt-4 space-x-2 mx-3 px-3 motion-safe:animate-pulse">
+        <div className="flex justify-center mt-4 space-x-2 mx-3 px-3  animate__animated animate__fadeIn animate__infinite animate__slow">
           <span className=" py-[2px] px-[8px]  bg-gray-300 text-white  border rounded ">
             &lt;
           </span>
           {Array.from(
-            { length: Math.ceil(petitionLength / 25) },
+            { length:7 },
             (_, i) => i
           ).map((_, i) => {
             return (
