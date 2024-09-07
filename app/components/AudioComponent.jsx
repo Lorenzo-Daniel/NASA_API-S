@@ -12,10 +12,9 @@ function AudioComponent({ data, audioLink, showButton }) {
     .replace(/^HWHAP\s*/, "")
     .replace(/[#\?&]/g, "")
     .trim();
-  // console.log(title);
 
   return (
-    <div className="flex flex-col border border-slate-300 p-2 max-w-80">
+    <div className="flex flex-col border rounded border-slate-300 p-2 max-w-80 min-w-80">
       <span className="text-sm md:text-md hidden md:block ml-1 mb-1">
         {titleName}
       </span>
@@ -24,7 +23,7 @@ function AudioComponent({ data, audioLink, showButton }) {
           <audio
             src={audioLink}
             controls
-            className="w-40 sm:w-44 md:w-60 lg:w-64 xl:w-80 p-5 rounded text-red"
+            className="w-60 sm:w-44 md:w-60 lg:w-64 xl:w-80 p-5 rounded text-red"
           />
           <span className="text-sm md:text-md hidden absolute bottom-1 left-2 lg:block">
             {episode}

@@ -32,8 +32,6 @@ function DetailsPodcast() {
       .replace(/[#\?&]/g, "")
       .trim() === title);
       setCurrentObject(find);
-      console.log(find);
-
       try {
         const audioLink = await reRequestlink(find.href);
         setAudioLink(audioLink);
