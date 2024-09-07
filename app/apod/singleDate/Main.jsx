@@ -6,7 +6,6 @@ import DescriptionTextComponent from "@/app/components/DescriptionTextComponent"
 //----------------------------------------
 
 function Main({ data, isLoading, setFullImg, fullImg }) {
-  
   const [drop, setDrop] = useState(false);
   const { url, explanation, title, media_type, date } = data;
 

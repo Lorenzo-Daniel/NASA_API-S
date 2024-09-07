@@ -1,13 +1,12 @@
-import React from 'react'
-import ReactPlayer from 'react-player'
-import Image from 'next/image'
-import Link from 'next/link'
+import React from "react";
+import ReactPlayer from "react-player";
+import Image from "next/image";
+import Link from "next/link";
 
-
-function Main({showRango,isLoading,data,}) {
+function Main({ showRango, isLoading, data }) {
   return (
     <div>
-       {showRango.isTrue && (
+      {showRango.isTrue && (
         <p className="text-center mt-10 text:xs md:text-md lg:text-lg text-gray-500 px-10 underline decoration-solid ">
           RANGE FROM {showRango.start} TO {showRango.end}
           <span className="text-sm"> ({data.length} images)</span>
@@ -36,7 +35,6 @@ function Main({showRango,isLoading,data,}) {
                       width={300}
                       height={300}
                       className="object-cover h-full"
-                      
                     />
                     <p className="p-3 absolute left-0 bottom-0 text-white text-sm ">
                       {item.title}
@@ -55,7 +53,7 @@ function Main({showRango,isLoading,data,}) {
             ))}
       </div>
     </div>
-  )
+  );
 }
 
-export default Main
+export default Main;

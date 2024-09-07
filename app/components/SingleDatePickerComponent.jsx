@@ -1,25 +1,21 @@
 import React, { forwardRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import { dateFormatForPicker } from "../helpers/formatDate";
+import dayjs from "dayjs";
 function SingleDatePickerComponent({
   error,
   setError,
   setSelectedDate,
   selectedDate,
 }) {
-  const formatedDate = (date) => {
-    if (!date) return "";
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate() + 1).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
 
   const handleChange = (date) => {
-    setSelectedDate(formatedDate(date));
+    setSelectedDate(dateFormatForPicker(date,'-'));
     setError({ error: false, message: "" });
   };
+
+ console.log(selectedDate);
 
   return (
     <div className="relative">
@@ -28,12 +24,12 @@ function SingleDatePickerComponent({
           popperPlacement="bottom-start"
           portalId="root-portal"
           placeholderText="Enter a date"
-          selected={selectedDate ? new Date(selectedDate) : null}
+          selected={selectedDate ?selectedDate: null}
           onChange={handleChange}
           maxDate={new Date()}
           minDate={new Date("1995-06-16")}
           dateFormat="yyyy/MM/dd"
-          showMonthDropdown
+    showMonthDropdown
           showYearDropdown
           scrollableYearDropdown
           yearDropdownItemNumber={100}

@@ -4,19 +4,14 @@ import Image from "next/image";
 
 //-----------------------------------
 
-function Main({ data, isLoading, currentPage }) {
+function Main({ data, isLoading }) {
   return (
     <div className="container p-5 m-auto grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-x-4 gap-y-4">
       {!isLoading
         ? data?.map((element, index) => (
             <div key={index} className="w-full">
               <div className="shadow-md shadow-slate-500 overflow-hidden rounded-md relative w-full h-full">
-                <Link
-                  href={`marsRover/${element?.id}`}
-                  onClick={() => {
-                    sessionStorage.setItem("currentPage", currentPage); 
-                  }}
-                >
+                <Link href={`marsRover/${element?.id}`}>
                   <Image
                     src={element?.img_src}
                     alt={element?.id}

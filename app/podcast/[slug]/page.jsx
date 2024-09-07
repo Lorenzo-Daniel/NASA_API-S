@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { CircleLoader } from "react-spinners";
 import { splitByDots } from "@/app/helpers/functions";
 import AudioComponent from "@/app/components/AudioComponent";
+import { swalError } from "@/app/helpers/swal";
 //---------------------------
 
 function DetailsPodcast() {
@@ -11,7 +12,6 @@ function DetailsPodcast() {
   const getSS = JSON.parse(sessionStorage.getItem("NASA-podcast")) || [];
   const [currentObject, setCurrentObject] = useState(null);
   const [audioLink, setAudioLink] = useState({});
-  const [currentIndex, setCurrentIndex] = useState(0);
 
   const reRequestlink = async (href) => {
     try {
@@ -19,6 +19,7 @@ function DetailsPodcast() {
       const res = await request.json();
       return res[0];
     } catch (error) {
+      swalError("Upss!");
       console.log(error);
       return null;
     }
@@ -27,15 +28,19 @@ function DetailsPodcast() {
   useEffect(() => {
     const findObject = async () => {
       const title = decodeURIComponent(slug);
-      const find = getSS.find((element) => element.data[0].title === title);
-      setCurrentIndex(findIdx);
+      const find = getSS.find((element) => element.title .replace(/^HWHAP\s*/, "")
+      .replace(/[#\?&]/g, "")
+      .trim() === title);
       setCurrentObject(find);
+      console.log(find);
 
       try {
         const audioLink = await reRequestlink(find.href);
         setAudioLink(audioLink);
       } catch (error) {
-        console.error("something went wrong with audioLink");
+        setTimeout(() => {
+          swalError("something went wrong with audioLink");
+        }, 3000);
       }
     };
 
@@ -53,14 +58,16 @@ function DetailsPodcast() {
     <div>
       <div className="flex justify-center py-10 bg-gray-200">
         {audioLink ? (
-          ''
+          <div>
+            <AudioComponent data={currentObject} audioLink={audioLink} />
+          </div>
         ) : (
           <CircleLoader color={"#d4d6da"} size={30} />
         )}
       </div>
-      <div className="p-10 text-start max-w-7xl m-auto">
-        {splitByDots(currentObject.data[0].description).map((item, i) => {
-          return <p>{item}</p>;
+      <div className="p-10 text-start max-w-4xl m-auto">
+        {splitByDots(currentObject.description).map((item, i) => {
+          return <p key={i}>{item}</p>;
         })}
       </div>
     </div>
@@ -68,22 +75,3 @@ function DetailsPodcast() {
 }
 
 export default DetailsPodcast;
-
-{
-  /* <div className="bg-blue-50 h-60 flex justify-center items-center ">
-          <div className="border h-32 p-5 ">
-            <span className="text-md ml-1 ">
-              {currentObject.data[0].title.replace(/.*Ep\d+\s+/, "")}
-            </span>
-            <audio
-              src={audioLink}
-              controls
-              className="  rounded  w-60 sm:w-80 "
-            />
-            <div className="flex justify-between mt-1">
-              <span>{currentObject.data[0].title.match(/Ep\d+/)}</span>
-              <span>{currentObject.data[0].date_created.slice(0, 10)}</span>
-            </div>
-          </div>
-        </div> */
-}

@@ -36,7 +36,7 @@ function Details() {
       setWait(true);
     }, 1000);
 
-    return () => clearTimeout(timeoutId); // Limpieza del timeout
+    return () => clearTimeout(timeoutId); 
   }, []);
 
   if (!currentObject) {

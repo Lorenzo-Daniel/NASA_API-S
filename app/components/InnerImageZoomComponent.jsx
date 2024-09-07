@@ -25,7 +25,7 @@ function InnerImageZoomComponent({ url, date }) {
             onClick={() => setFullImg((prev) => !prev)}
           />
         </div>
-        <span className="absolute text-white left-3 bottom-3">{date}</span>
+        <span className="text-sm absolute text-white left-3 bottom-3">{date}</span>
       </div>
       {fullImg && swalFullImg(url, setFullImg)}
     </div>

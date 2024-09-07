@@ -1,95 +1,36 @@
-const minDate = new Date("1995-06-16").getTime();
-const maxDate = new Date().getTime();
+import { swalError } from "@/app/helpers/swal";
 
-export const validateDates = ({start, end,setDateErrors,setDateSuccess,prevErrors,prevSuccess}) => {
-  let valid = true;
 
-  if (
-    start === "" ||
-    new Date(start).getTime() < minDate ||
-    new Date(start).getTime() > maxDate
-  ) {
-    setDateErrors((prevErrors) => ({
-      ...prevErrors,
-      start: {
-        error: true,
-        message: `Date must be between ${new Date(
-          minDate
-        ).toLocaleDateString()} and ${new Date(maxDate).toLocaleDateString()}.`,
-      },
-    }));
-    setDateSuccess((prevSuccess) => ({
-      ...prevSuccess,
-      start: { success: false },
-    }));
-    valid = false;
-    return;
-  } else {
-    setDateErrors((prevErrors) => ({
-      ...prevErrors,
-      start: { error: false, message: "" },
-    }));
-    setDateSuccess((prevSuccess) => ({
-      ...prevSuccess,
-      start: { success: true },
-    }));
+
+export const getAPI = async (start, end,setIsLoading,setShowRango,setData) => {
+  try {
+    setIsLoading(true);
+    setShowRango({ isTrue: false });
+    const request = await fetch(
+      `https://api.nasa.gov/planetary/apod?api_key=teHf0lemJMiaPjInzdphYVK6bDuGLSaFt8jO8IIj&start_date=${start}&end_date=${end}`
+    );
+    const response = await request.json();
+    sessionStorage.setItem("NASA-pictures", JSON.stringify(response));
+    sessionStorage.setItem(
+      "ApodRange",
+      JSON.stringify({
+        start: start.replace(/-/g, "/"),
+        end: end.replace(/-/g, "/"),
+        isTrue: true,
+      })
+    );
+    setShowRango({
+      start: start.replace(/-/g, "/"),
+      end: end.replace(/-/g, "/"),
+      isTrue: true,
+    });
+    setIsLoading(false);
+    setData(response);
+  } catch (error) {
+    setTimeout(() => {
+      setIsLoading(false);
+      swalError("Something went wrong! Try again!");
+    }, 3000);
+    console.error(error);
   }
-
-  if (
-    end === "" ||
-    new Date(end).getTime() < minDate ||
-    new Date(end).getTime() > maxDate
-  ) {
-    setDateErrors((prevErrors) => ({
-      ...prevErrors,
-      end: {
-        error: true,
-        message: `End date must be between ${new Date(
-          minDate
-        ).toLocaleDateString()} and ${new Date(maxDate).toLocaleDateString()}.`,
-      },
-    }));
-    setDateSuccess((prevSuccess) => ({
-      ...prevSuccess,
-      end: { success: false },
-    }));
-    valid = false;
-    return;
-  } else {
-    setDateErrors((prevErrors) => ({
-      ...prevErrors,
-      end: { error: false, message: "" },
-    }));
-    setDateSuccess((prevSuccess) => ({
-      ...prevSuccess,
-      end: { success: true },
-    }));
-  }
-
-  if (start && end && new Date(start).getTime() > new Date(end).getTime()) {
-    setDateErrors((prevErrors) => ({
-      ...prevErrors,
-      range: {
-        error: true,
-        message: "End date cannot be before than the start date.",
-      },
-    }));
-    setDateSuccess((prevSuccess) => ({
-      ...prevSuccess,
-      range: { success: false },
-    }));
-    setDateSuccess((prevSuccess) => ({
-      ...prevSuccess,
-      end: { success: false },
-    }));
-    valid = false;
-    return;
-  } else {
-    setDateErrors((prevErrors) => ({
-      ...prevErrors,
-      range: { error: false, message: "" },
-    }));
-  }
-
-  return valid;
 };
