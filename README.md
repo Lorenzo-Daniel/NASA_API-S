@@ -47,6 +47,7 @@ This is a web app built with **Next.js** that interacts with various **NASA APIs
 ## Technologies Used
 
 ### Libraries:
+- **Next.js**: The core framework used for building the app, allowing for server-side rendering and optimized performance.
 - **animate.css**: For CSS animations.
 - **dayjs**: For date handling.
 - **react-datepicker**: For selecting dates in forms.
