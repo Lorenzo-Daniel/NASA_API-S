@@ -70,6 +70,6 @@ This project highlights a deep understanding of API interactions, including fetc
 
 The application is live and can be accessed at the following link:
 
-[Visit the NASA Web App](https://your-app-url.netlify.app](https://luminous-piroshki-829125.netlify.app/))
+[Visit the NASA Web App](https://luminous-piroshki-829125.netlify.app/))
 
 This web app is deployed using **Netlify** for easy continuous deployment and integration with GitHub.
