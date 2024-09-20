@@ -4,11 +4,14 @@ import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 import "animate.css";
-
 export const metadata = {
-  title: "NASA API's",
-  description: "HOME",
+  title: "NASA APIs",
+  description: "This is a web app created whit Nasa API information",
+  icons: {
+    icon: "./icon.png",
+  },
 };
+
 function RootLayout({ children }) {
   return (
     <html lang="en">

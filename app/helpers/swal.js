@@ -27,10 +27,10 @@ export const swalFullImg = (url, setFullImg) => {
     },
     imageAlt: "A tall image",
     customClass: {
-      container: " p-0",
+      container: " p-0 ",
       popup: "w-dvw bg-[#000000f9] min-h-dvh rounded-none ",
       closeButton: "hover:text-gray-200",
-      image: "p-1 ",
+      image: "p-1 max-w-4xl max-h-dvh",
       htmlContainer: "bg-black",
     },
   });
