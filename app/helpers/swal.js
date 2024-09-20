@@ -30,7 +30,7 @@ export const swalFullImg = (url, setFullImg) => {
       container: " p-0 ",
       popup: "w-dvw bg-[#000000f9] min-h-dvh rounded-none ",
       closeButton: "hover:text-gray-200",
-      image: "p-1 max-w-4xl max-h-dvh",
+      image: "p-1 xl:max-w-5xl max-h-dvh",
       htmlContainer: "bg-black",
     },
   });
